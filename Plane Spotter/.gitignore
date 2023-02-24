@@ -1,0 +1,8 @@
+# Whitelist specific Unity folders for version control
+*
+!*/
+
+!.gitignore
+!Assets/
+!Packages/
+!ProjectSettings/
