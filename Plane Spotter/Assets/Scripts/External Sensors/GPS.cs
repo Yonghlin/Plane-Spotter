@@ -5,9 +5,11 @@ using UnityEngine.Android;
 
 public class GPS : MonoBehaviour
 {
-    public  double longitude{ get; protected set;}
-    public  double latitude{ get;protected set;}
-    public double altitude {get; protected set;}
+    private double longitude;
+    private double latitude;
+    private double altitude;
+    private int framesRun = 0;
+    private int timesRun = 0;
 
     // Start is called before the first frame update
     IEnumerator Start()
@@ -52,16 +54,37 @@ public class GPS : MonoBehaviour
 
     //Run on each frame. Checks to see if user still has permission for FineLocation and runs a coroutine to update all of the stored data
     void Update(){
-        if(Permission.HasUserAuthorizedPermission(Permission.FineLocation)){
-            StartCoroutine(updateCurrentLocation());
+
+        if(Permission.HasUserAuthorizedPermission(Permission.FineLocation) && framesRun == 180){
+            longitude = Input.location.lastData.longitude;
+            latitude = Input.location.lastData.latitude;
+            altitude = Input.location.lastData.altitude;
+
+            timesRun++;
+
+            framesRun = 0;
+            
+        }else{
+             framesRun++;
         }
     }
     
-    //Stores current location data 
-    string updateCurrentLocation(){
-        longitude = Input.location.lastData.longitude;
-        latitude = Input.location.lastData.latitude;
-        altitude = Input.location.lastData.altitude;
-        return null;
+    
+    public double getLongitude(){
+        return longitude;
     }
+
+    public double getLatitude(){
+        return latitude;
+    }
+
+    public double getAltitude(){
+        return altitude;
+    }
+
+    public double getTimesRun(){
+        return timesRun;
+    }
+
+    
 }
