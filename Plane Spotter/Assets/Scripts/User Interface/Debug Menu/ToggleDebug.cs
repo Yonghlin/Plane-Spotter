@@ -12,6 +12,7 @@ public class ToggleDebug : MonoBehaviour
     public TMP_Text latitude;
     public TMP_Text altitude;
     public TMP_Text timesRun;
+    public TMP_Text airportCount;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,7 @@ public class ToggleDebug : MonoBehaviour
         latitude.enabled = false;
         altitude.enabled = false;
         timesRun.enabled = false;
+        airportCount.enabled = false;
     }
 
     void toggleMenuVisibility(){
@@ -29,11 +31,13 @@ public class ToggleDebug : MonoBehaviour
             latitude.enabled = false;
             altitude.enabled = false;
             timesRun.enabled = false;
+            airportCount.enabled = false;
         }else{
             longitude.enabled = true;
             latitude.enabled = true;
             altitude.enabled = true;
             timesRun.enabled = true;
+            airportCount.enabled = true;
         }
         isVisible = !isVisible;
     }
