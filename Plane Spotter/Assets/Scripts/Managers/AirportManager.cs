@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using UnityEngine;
 
+using gps = GPS;
 public class Airport
 {
     public string Code { get; set; }
@@ -35,7 +37,15 @@ public class AirportSet
 
 public class AirportManager : MonoBehaviour
 {
-    AirportSet airports = new AirportSet();
+    private AirportSet airports = new AirportSet();
+
+    private List<GameObject> airportPointers = new List<GameObject>();
+
+    public GameObject arrow;
+
+    public gps Gps;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +63,11 @@ public class AirportManager : MonoBehaviour
         airports.addAirport(new Airport("KMDT", "Harrisburg Intl", 310, -76.7626192, 40.1931917));
         airports.addAirport(new Airport("W35", "Potomac Airpark", 412.5, -78.1660833, 39.6926111));
         airports.addAirport(new Airport("P17", "Greater Breezewood Rgnl", 1345, -78.2977333, 39.8742681));
+
+        foreach(Airport airport in airports.airports)
+        {
+            Instantiate(arrow, new Vector3((float)airport.Latitude - (float) Gps.getLatitude(), (float)airport.Elevation - (float) Gps.getAltitude(), (float)airport.Longitude - (float) Gps.getLongitude()), Quaternion.Euler(90, 0, 0));
+        }
     }
 
     // Update is called once per frame
