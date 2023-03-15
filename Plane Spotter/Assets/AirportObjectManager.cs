@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Airport : MonoBehaviour
+public class AirportObjectManager : MonoBehaviour
 {
-    public string Code;
-    public string Name;
-    public double Elevation;
-    public double Longitude;
-    public double Latitude;
+
     // Start is called before the first frame update
     void Start()
     {
-        // set initial location here
+        
     }
 
     // Update is called once per frame

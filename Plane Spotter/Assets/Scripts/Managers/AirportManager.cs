@@ -65,6 +65,8 @@ public class AirportManager : MonoBehaviour
         airports.addAirport(new AirportData("KMDT", "Harrisburg Intl", 310, -76.7626192, 40.1931917));
         airports.addAirport(new AirportData("W35", "Potomac Airpark", 412.5, -78.1660833, 39.6926111));
         airports.addAirport(new AirportData("P17", "Greater Breezewood Rgnl", 1345, -78.2977333, 39.8742681));
+        // misc
+        airports.addAirport(new AirportData("KBWI", "Baltimore/Washington Intl Airport", 143.4, -76.669, 39.176));
 
         foreach(AirportData airport in airports.airports)
         {
@@ -76,6 +78,7 @@ public class AirportManager : MonoBehaviour
             ap.Longitude = airport.Longitude;
             ap.Name = airport.Name;
 
+            na.SetActive(true);
         }
     }
 
