@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using UnityEngine;
 
 using gps = GPS;
-public class Airport
+public class AirportData
 {
     public string Code { get; set; }
     public string Name { get; set; }
@@ -12,7 +12,7 @@ public class Airport
     public double Longitude { get; set; }
     public double Latitude { get; set; }
 
-    public Airport(string code, string name, double elevation,  double longitude, double latitude)
+    public AirportData(string code, string name, double elevation, double longitude, double latitude)
     {
         this.Code = code;
         this.Name = name;
@@ -24,14 +24,14 @@ public class Airport
 
 public class AirportSet
 {
-    public List<Airport> airports = new List<Airport>();
+    public List<AirportData> airports = new List<AirportData>();
     
-    public void addAirport(Airport airport)
+    public void addAirport(AirportData airport)
     {
         airports.Add(airport);
     }
 
-    public List<Airport> GetAirports() { return airports; }
+    public List<AirportData> GetAirports() { return airports; }
 
 }
 
@@ -45,28 +45,37 @@ public class AirportManager : MonoBehaviour
 
     public gps Gps;
 
+    public GameObject AirportBaseObject;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        airports.addAirport(new Airport("N68", "Franklin County Rgnl", 687.9, -77.6432563, 39.9729617));
-        airports.addAirport(new Airport("W05", "Gettysburg Rgnl", 553.2, -77.27465, 39.8413092));
-        airports.addAirport(new Airport("N94", "Carlisle", 510.1, -77.1742736, 40.1879144));
-        airports.addAirport(new Airport("W73", "Mid Atlantic Soaring Center", 573, -77.3513761, 39.75704));
-        airports.addAirport(new Airport("KHGR", "Hagerstown Rgnl", 703.1, -77.7265, 39.7085));
-        airports.addAirport(new Airport("07N", "Bermudian Valley Airpark", 470, -77.0038667, 40.0167617));
-        airports.addAirport(new Airport("KTVH", "York", 494.7, -76.8730278, 39.917));
-        airports.addAirport(new Airport("0P8", "Lazy B Ranch", 476, -76.8153, 40.0244236));
-        airports.addAirport(new Airport("KCXY", "Capital City", 346.7, -76.8513611, 40.2171389));
-        airports.addAirport(new Airport("P34", "Mifflintown", 545, -77.4056667, 40.5989444));
-        airports.addAirport(new Airport("KDMW", "Carroll Co Rgnl", 789.2, -77.0076667, 39.6082778));
-        airports.addAirport(new Airport("KMDT", "Harrisburg Intl", 310, -76.7626192, 40.1931917));
-        airports.addAirport(new Airport("W35", "Potomac Airpark", 412.5, -78.1660833, 39.6926111));
-        airports.addAirport(new Airport("P17", "Greater Breezewood Rgnl", 1345, -78.2977333, 39.8742681));
+        airports.addAirport(new AirportData("N68", "Franklin County Rgnl", 687.9, -77.6432563, 39.9729617));
+        airports.addAirport(new AirportData("W05", "Gettysburg Rgnl", 553.2, -77.27465, 39.8413092));
+        airports.addAirport(new AirportData("N94", "Carlisle", 510.1, -77.1742736, 40.1879144));
+        airports.addAirport(new AirportData("W73", "Mid Atlantic Soaring Center", 573, -77.3513761, 39.75704));
+        airports.addAirport(new AirportData("KHGR", "Hagerstown Rgnl", 703.1, -77.7265, 39.7085));
+        airports.addAirport(new AirportData("07N", "Bermudian Valley Airpark", 470, -77.0038667, 40.0167617));
+        airports.addAirport(new AirportData("KTVH", "York", 494.7, -76.8730278, 39.917));
+        airports.addAirport(new AirportData("0P8", "Lazy B Ranch", 476, -76.8153, 40.0244236));
+        airports.addAirport(new AirportData("KCXY", "Capital City", 346.7, -76.8513611, 40.2171389));
+        airports.addAirport(new AirportData("P34", "Mifflintown", 545, -77.4056667, 40.5989444));
+        airports.addAirport(new AirportData("KDMW", "Carroll Co Rgnl", 789.2, -77.0076667, 39.6082778));
+        airports.addAirport(new AirportData("KMDT", "Harrisburg Intl", 310, -76.7626192, 40.1931917));
+        airports.addAirport(new AirportData("W35", "Potomac Airpark", 412.5, -78.1660833, 39.6926111));
+        airports.addAirport(new AirportData("P17", "Greater Breezewood Rgnl", 1345, -78.2977333, 39.8742681));
 
-        foreach(Airport airport in airports.airports)
+        foreach(AirportData airport in airports.airports)
         {
-            Instantiate(arrow, new Vector3((float)airport.Latitude - (float) Gps.getLatitude(), (float)airport.Elevation - (float) Gps.getAltitude(), (float)airport.Longitude - (float) Gps.getLongitude()), Quaternion.Euler(90, 0, 0));
+            GameObject na = Instantiate(AirportBaseObject);
+            Airport ap = na.GetComponent<Airport>();
+            ap.Elevation = airport.Longitude;
+            ap.Latitude = airport.Latitude;
+            ap.Code = airport.Code;
+            ap.Longitude = airport.Longitude;
+            ap.Name = airport.Name;
+
         }
     }
 
