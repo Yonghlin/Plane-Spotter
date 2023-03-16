@@ -32,11 +32,21 @@ using gps = GPS;
 [Serializable]
 public struct AirportData
 {
-    public string Code;
-    public string Name;
-    public double Elevation;
-    public double Latitude;
-    public double Longitude;
+    public string airport_code;
+    public string alternate_ident;
+    public string name;
+    public double elevation;
+    public string city;
+    public string state;
+    public double latitiude;
+    public double longitude;
+    public string timezone;
+    public string country_code;
+    public string wiki_url;
+    public string airport_flights_url;
+    public double distance;
+    public double heading;
+    public string direction;
 }
 
 [Serializable]
@@ -71,22 +81,7 @@ public class AirportManager : MonoBehaviour
     void Start()
     {
 
-        GetAirportsFromFA();
-
-        
-        
-        foreach(AirportData airport in airports.airports)
-        {
-            GameObject na = Instantiate(AirportBaseObject);
-            Airport ap = na.GetComponent<Airport>();
-            ap.Elevation = airport.Elevation;
-            ap.Latitude = airport.Latitude;
-            ap.Code = airport.Code;
-            ap.Longitude = airport.Longitude;
-            ap.Name = airport.Name;
-
-            na.SetActive(true);
-        }
+        StartCoroutine(GetAirportsFromFA());
     }
 
     // Update is called once per frame
@@ -105,34 +100,48 @@ public class AirportManager : MonoBehaviour
         return airports.airports.Count;
     }
 
-    private AirportSet GetAirportsFromFA()
+    IEnumerator GetAirportsFromFA()
     {
-        StartCoroutine(GetText());
-        return JsonUtility.FromJson<AirportSet>(httpResult);
-    }
-
-    IEnumerator GetText()
-    {
-        UnityWebRequest www = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/airports/nearby?" +
+        using (UnityWebRequest request = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/airports/nearby?" +
                         "latitude=" + lat.ToString() +
                         "&longitude=" + lon.ToString() +
-                        "&radius=" + Radius);
-        www.SetRequestHeader("Content-Type", "application/json");
-        www.SetRequestHeader("x-apikey", ApiKey);
-        yield return www.SendWebRequest();
-
-        if (www.isNetworkError || www.isHttpError)
+                        "&radius=" + Radius))
         {
-            Debug.Log(www.error);
+            request.SetRequestHeader("Content-Type", "application/json");
+            request.SetRequestHeader("x-apikey", ApiKey);
+            yield return request.SendWebRequest();
+            if(request.isHttpError || request.isNetworkError)
+            {
+                Debug.Log(request.error);
+            }
+            else
+            {
+                Debug.Log("AIRPORTMANAGER: Successfully got text");
+                var text = request.downloadHandler.text;
+                Debug.Log($"{text}");
+                httpResult = text;
+                airports = JsonUtility.FromJson<AirportSet>(text);
+                Debug.Log(GetNumAirports());
+                SpawnAirports();
+                yield return airports;
+            }
         }
-        else
-        {
-            // Show results as text
-            Debug.Log(www.downloadHandler.text);
+    }
 
-            // Or retrieve results as binary data
-            byte[] results = www.downloadHandler.data;
-            httpResult = www.downloadHandler.text;
+    public void SpawnAirports()
+    {
+        foreach (AirportData airport in airports.airports)
+        {
+            Debug.Log("Spawning airport: " + airport.name);
+            GameObject na = Instantiate(AirportBaseObject);
+            Airport ap = na.GetComponent<Airport>();
+            ap.Elevation = airport.elevation;
+            ap.Latitude = airport.latitiude;
+            ap.Code = airport.airport_code;
+            ap.Longitude = airport.longitude;
+            ap.Name = airport.name;
+
+            na.SetActive(true);
         }
     }
 }
