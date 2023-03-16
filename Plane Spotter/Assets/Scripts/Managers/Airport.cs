@@ -39,10 +39,12 @@ public class Airport : MonoBehaviour
         double PlayerAltitude = gps.getAltitude();
 
         float x = (float) (Latitude - PlayerLatitude);
-        float y = (float) (PlayerAltitude - PlayerAltitude);
+        float y = (float) (Elevation - PlayerAltitude);
         float z = (float) (Longitude - PlayerLongitude);
 
-        transform.position = new Vector3(x * 1000, y, z * 1000);
+        // TODO get proper distance from player/airports
+
+        transform.position = new Vector3(x * 5000, y, z * 5000);
 
       //  transform.localScale = new Vector3(
       //      1000 * Mathf.Abs(x*z * transform.localScale.x),
