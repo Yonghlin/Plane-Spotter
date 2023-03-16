@@ -13,7 +13,7 @@ public class UpdateDebugData : MonoBehaviour
     public TMP_Text timesRun;
     public GPS gps;
     public TMP_Text numAirports;
-    public airportManager airportManager;
+    //public airportManager airportManager;
 
     // Update is called once per frame
     void Update()
@@ -22,6 +22,6 @@ public class UpdateDebugData : MonoBehaviour
         longitude.text = "Longitude: " + gps.getLongitude();
         altitude.text = "Altitude: " + gps.getAltitude();
         timesRun.text = "Times Run: " + gps.getTimesRun();
-        numAirports.text = "Num Airports: " + airportManager.GetNumAirports();
+        //numAirports.text = "Num Airports: " + airportManager.GetNumAirports();
     }
 }
