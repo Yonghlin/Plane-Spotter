@@ -57,15 +57,23 @@ public class AirportManager : MonoBehaviour
 
     public GameObject AirportBaseObject;
 
-    public string FlightAwareKey;
+    public string ApiKey;
 
     public double Radius;
 
+
+    public double lat;
+    public double lon;
+    public double altitude;
+
+    private string httpResult;
     // Start is called before the first frame update
     void Start()
     {
 
-        airports = GetAirportsFromFA(FlightAwareKey, 40.0506496, -77.5275351, 50);
+        GetAirportsFromFA();
+
+        
         
         foreach(AirportData airport in airports.airports)
         {
@@ -97,52 +105,34 @@ public class AirportManager : MonoBehaviour
         return airports.airports.Count;
     }
 
-    private AirportSet GetAirportsFromFA(string ApiKey, double lat, double lon, double radius)
+    private AirportSet GetAirportsFromFA()
     {
-        //    using (var client = new HttpClient())
-        //    {
-        //        client.DefaultRequestHeaders.Accept.Clear();
-        //        client.DefaultRequestHeaders.Accept.Add(
-        //            new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-        //        client.DefaultRequestHeaders.Add("x-apikey", ApiKey);
-
-        //        var response = await client.GetAsync("https://aeroapi.flightaware.com/aeroapi/airports/nearby?" +
-        //                "latitude=" + lat.ToString() +
-        //                "&longitude=" + lon.ToString() +
-        //                "&radius=" + radius);
-        //        var contentStream = await response.Content.ReadAsStreamAsync();
-        //        Debug.Log("RESPONSE CODE: " + response.StatusCode);
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            using (StreamReader reader = new StreamReader(contentStream))
-        //            {
-        //                string jsonstr = reader.ReadToEnd();
-        //                Debug.Log(jsonstr);
-        //                return JsonUtility.FromJson<AirportSet>(jsonstr);
-        //            }
-        //        }
-        //    }
-        //    return null;
-        //}
-        UnityWebRequest www = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/airports/nearby?" +
-                        "latitude=" + lat.ToString() +
-                        "&longitude=" + lon.ToString() +
-                        "&radius=" + radius);
-        www.SetRequestHeader("x-apikey", ApiKey);
-        www.SetRequestHeader("Content-Type", "application/json");
-        yield return www.Send();
-        Debug.Log(www.result); Debug.Log(www.error);
-        return new AirportSet();
+        StartCoroutine(GetText());
+        return JsonUtility.FromJson<AirportSet>(httpResult);
     }
 
-    private IEnumerable getFromServer(string ApiKey, string url)
+    IEnumerator GetText()
     {
         UnityWebRequest www = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/airports/nearby?" +
                         "latitude=" + lat.ToString() +
                         "&longitude=" + lon.ToString() +
-                        "&radius=" + radius);
-        www.SetRequestHeader("x-apikey", ApiKey);
+                        "&radius=" + Radius);
         www.SetRequestHeader("Content-Type", "application/json");
-        yield return www.Send();
+        www.SetRequestHeader("x-apikey", ApiKey);
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            // Show results as text
+            Debug.Log(www.downloadHandler.text);
+
+            // Or retrieve results as binary data
+            byte[] results = www.downloadHandler.data;
+            httpResult = www.downloadHandler.text;
+        }
     }
 }
