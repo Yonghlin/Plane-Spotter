@@ -1724,6 +1724,11 @@ PrefabInstance:
       propertyPath: gps
       value: 
       objectReference: {fileID: 1354141932}
+    - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
+        type: 3}
+      propertyPath: gpsConverter
+      value: 
+      objectReference: {fileID: 1418156261}
     - target: {fileID: 3807611698012390438, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_RootOrder
@@ -1818,6 +1823,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1418156257}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1418156261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418156258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 874987c3aabec9b4abd714da6caba501, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1435971376
 GameObject:
   m_ObjectHideFlags: 0

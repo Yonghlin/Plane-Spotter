@@ -34,25 +34,20 @@ public class Airport : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        double PlayerLatitude = gps.getLatitude();
-        double PlayerLongitude = gps.getLongitude();
-        double PlayerAltitude = gps.getAltitude();
+        Vector2 unityCoords = GPSEncoder.GPSToUCS(
+            (float) (Latitude - gps.getLatitude()),
+            (float) (Longitude - gps.getLongitude())
+        );
 
-        float x = (float) (Latitude - PlayerLatitude);
-        float y = (float) (Elevation - PlayerAltitude);
-        float z = (float) (Longitude - PlayerLongitude);
+        transform.position = new Vector3(
+            unityCoords.x / 100,
+            (float) 0,
+            unityCoords.y / 100
+        );
 
-        // TODO get proper distance from player/airports
-
-        transform.position = new Vector3(x * 5000, y, z * 5000);
-
-      //  transform.localScale = new Vector3(
-      //      1000 * Mathf.Abs(x*z * transform.localScale.x),
-      //      1000 * Mathf.Abs(z*x * transform.localScale.y),
-      //      1000 * Mathf.Abs(z*x * transform.localScale.z)
-      //  );
-
-
-
+        Debug.Log("distance (x): " + unityCoords.x);
+        Debug.Log("distance (z): " + unityCoords.y); // b/c it's a Vector2 not a Vector3
     }
 }
+
+
