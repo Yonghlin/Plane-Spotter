@@ -45,8 +45,9 @@ public class Airport : MonoBehaviour
             unityCoords.y / 100
         );
 
-        Debug.Log("distance (x): " + unityCoords.x);
-        Debug.Log("distance (z): " + unityCoords.y); // b/c it's a Vector2 not a Vector3
+        Debug.Log("distance from player to airport (x): " + transform.position.x);
+        Debug.Log("distance from player to airport (y): " + transform.position.y);
+        Debug.Log("distance from player to airport (z): " + transform.position.z);
     }
 }
 
