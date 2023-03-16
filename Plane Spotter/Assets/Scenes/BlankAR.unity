@@ -1427,6 +1427,8 @@ MonoBehaviour:
   arrow: {fileID: 0}
   Gps: {fileID: 1354141932}
   AirportBaseObject: {fileID: 1418156258}
+  FlightAwareKey: veQykXbTGvP744W5wh6aeOXzBrDj2A5c
+  Radius: 50
 --- !u!114 &1354141934
 MonoBehaviour:
   m_ObjectHideFlags: 0
