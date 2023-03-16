@@ -72,7 +72,7 @@ public class AirportManager : MonoBehaviour
         {
             GameObject na = Instantiate(AirportBaseObject);
             Airport ap = na.GetComponent<Airport>();
-            ap.Elevation = airport.Longitude;
+            ap.Elevation = airport.Elevation;
             ap.Latitude = airport.Latitude;
             ap.Code = airport.Code;
             ap.Longitude = airport.Longitude;
