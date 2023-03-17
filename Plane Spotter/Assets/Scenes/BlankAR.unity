@@ -1686,7 +1686,6 @@ MonoBehaviour:
   timesRun: {fileID: 693494042}
   gps: {fileID: 1354141932}
   numAirports: {fileID: 1286286743}
-  airportManager: {fileID: 1354141933}
 --- !u!1001 &1418156257
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1734,6 +1733,16 @@ PrefabInstance:
       propertyPath: gpsConverter
       value: 
       objectReference: {fileID: 1418156261}
+    - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
+        type: 3}
+      propertyPath: distance_multiplier
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
+        type: 3}
+      propertyPath: elevation_multiplier
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 3807611698012390438, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_RootOrder
