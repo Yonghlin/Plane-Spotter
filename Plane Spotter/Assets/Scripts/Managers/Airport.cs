@@ -15,36 +15,28 @@ public class Airport : MonoBehaviour
 
     // GPS
     public GPS gps;
+    public float distance_multiplier;
+    public float elevation_multiplier;
 
-    private float ElevationFloat;
-    private float LongitudeFloat; 
-    private float LatitudeFloat;
+    private void SetPosition()
+    {
+        Vector3 unityCoords = new Vector3(
+                   distance_multiplier * (float)(Latitude - gps.getLatitude()),
+                   elevation_multiplier * (float)Elevation,
+                   distance_multiplier * (float)(Longitude - gps.getLongitude()));
+        transform.position = unityCoords;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        // set initial location here
-        ElevationFloat = (float)Elevation;
-        LongitudeFloat = (float)Longitude;
-        LatitudeFloat = (float)Latitude;
-
-        //obj.transform.position.Set(LatitudeFloat, ElevationFloat, LongitudeFloat);
+        SetPosition();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector2 unityCoords = GPSEncoder.GPSToUCS(
-            (float) (Latitude - gps.getLatitude()),
-            (float) (Longitude - gps.getLongitude())
-        );
-
-        transform.position = new Vector3(
-            unityCoords.x / 100,
-            (float) 0,
-            unityCoords.y / 100
-        );
-
+        SetPosition();
         Debug.Log("distance from player to airport (x): " + transform.position.x);
         Debug.Log("distance from player to airport (y): " + transform.position.y);
         Debug.Log("distance from player to airport (z): " + transform.position.z);

@@ -38,7 +38,7 @@ public struct AirportData
     public double elevation;
     public string city;
     public string state;
-    public double latitiude;
+    public double latitude;
     public double longitude;
     public string timezone;
     public string country_code;
@@ -136,7 +136,7 @@ public class AirportManager : MonoBehaviour
             GameObject na = Instantiate(AirportBaseObject);
             Airport ap = na.GetComponent<Airport>();
             ap.Elevation = airport.elevation;
-            ap.Latitude = airport.latitiude;
+            ap.Latitude = airport.latitude;
             ap.Code = airport.airport_code;
             ap.Longitude = airport.longitude;
             ap.Name = airport.name;
