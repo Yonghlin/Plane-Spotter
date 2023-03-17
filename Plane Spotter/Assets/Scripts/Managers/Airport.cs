@@ -37,6 +37,8 @@ public class Airport : MonoBehaviour
     void Update()
     {
         SetPosition();
+        transform.Rotate(0, 2, 0, Space.Self);
+
         Debug.Log("distance from player to airport (x): " + transform.position.x);
         Debug.Log("distance from player to airport (y): " + transform.position.y);
         Debug.Log("distance from player to airport (z): " + transform.position.z);

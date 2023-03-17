@@ -219,7 +219,7 @@ Transform:
   m_GameObject: {fileID: 366926730}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 40, y: 30, z: 40}
+  m_LocalScale: {x: 8, y: 8, z: 8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1418156260}
@@ -1696,22 +1696,22 @@ PrefabInstance:
     - target: {fileID: 2409910347987573109, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1000
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2409910347987573109, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1000
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2409910347987573109, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1000
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 2409910347987573109, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 50
+      value: 9.4
       objectReference: {fileID: 0}
     - target: {fileID: 2409910347987573109, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
@@ -1732,16 +1732,16 @@ PrefabInstance:
         type: 3}
       propertyPath: gpsConverter
       value: 
-      objectReference: {fileID: 1418156261}
+      objectReference: {fileID: 0}
     - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: distance_multiplier
-      value: 5000
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: elevation_multiplier
-      value: 0.2
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3807611698012390438, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
@@ -1771,7 +1771,7 @@ PrefabInstance:
     - target: {fileID: 3807611698012390438, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3807611698012390438, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
@@ -1837,18 +1837,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1418156257}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1418156261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418156258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 874987c3aabec9b4abd714da6caba501, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1435971376
 GameObject:
   m_ObjectHideFlags: 0
@@ -2040,6 +2028,7 @@ GameObject:
   - component: {fileID: 1659859598}
   - component: {fileID: 1659859600}
   - component: {fileID: 1659859601}
+  - component: {fileID: 1659859602}
   m_Layer: 0
   m_Name: AR Session Origin
   m_TagString: Untagged
@@ -2098,5 +2087,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1fe9ba3dc3182914fb2496a31749314c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1659859602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659859597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a85efdf90d078948afebef63f3e6d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
