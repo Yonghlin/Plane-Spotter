@@ -20,11 +20,15 @@ public class Airport : MonoBehaviour
 
     private void SetPosition()
     {
+        // convert latitude/longitude to x/y coordinates
         Vector3 unityCoords = new Vector3(
                    distance_multiplier * (float)(Latitude - gps.getLatitude()),
                    elevation_multiplier * (float)Elevation,
                    distance_multiplier * (float)(Longitude - gps.getLongitude()));
-        transform.position = unityCoords;
+        // get the position binding script
+        PositionBindManager posManager = this.GetComponent<PositionBindManager>();
+        // set the bound position
+        posManager.SetBoundPosAndScale(this.gameObject, unityCoords);
     }
 
     // Start is called before the first frame update

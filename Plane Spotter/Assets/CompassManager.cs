@@ -13,7 +13,7 @@ public class CompassManager : MonoBehaviour
         // TODO Make this work. Get airport objects to be in absolute world position,
         // by setting camera rotation appropriately based on phone's current orientation.
         Quaternion attitude = Input.gyro.attitude;
-        transform.Rotate(0, -attitude.y, 0, Space.Self);
+        //transform.Rotate(0, -attitude.y, 0, Space.Self);
     }
 
     // Update is called once per frame
