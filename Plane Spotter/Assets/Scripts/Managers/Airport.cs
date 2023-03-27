@@ -14,6 +14,9 @@ public class Airport : MonoBehaviour
     public double Latitude;
 
     // GPS
+    [Range(1,5)]
+    public float waitTimeBeforeInstantiation;
+
     public GPS gps;
     public float distance_multiplier;
     public float elevation_multiplier;
@@ -36,15 +39,25 @@ public class Airport : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(LateStart());
+    }
+
+    // https://answers.unity.com/questions/971957/how-to-initialize-after-start.html
+    IEnumerator LateStart()
+    {
+        yield return new WaitForSeconds(waitTimeBeforeInstantiation);
+        // any code here to be run AFTER other GameObject's start functions have run
+        // without waiting a number of seconds, the objects won't display
         SetPosition();
+        // object position in the real world is affected by the direction of
+        // the camera, specifically when the app opens. so offset it here
+        float camYaw = Input.gyro.attitude.eulerAngles.x;
+        transform.RotateAround(gps.transform.position, Vector3.up, -camYaw);
     }
 
     // Update is called once per frame
     void Update()
     {
-        SetPosition();
-        transform.Rotate(0, 2, 0, Space.Self);
-
         Debug.Log("distance from player to airport (x): " + transform.position.x);
         Debug.Log("distance from player to airport (y): " + transform.position.y);
         Debug.Log("distance from player to airport (z): " + transform.position.z);
