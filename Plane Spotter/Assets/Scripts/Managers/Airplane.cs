@@ -18,6 +18,24 @@ public class Airplane : MonoBehaviour
     [Range(1, 5)]
     public float waitTimeBeforeInstantiation;
 
+    private double pos1_longitude;
+    private double pos1_latitude;
+    private double pos1_elevation;
+
+    private double pos2_longitude;
+    private double pos2_latitude;
+    private double pos2_elevation;
+
+    private bool grabbedPos1;
+
+    private double longitudeVelocity;
+    private double latitudeVelocity;
+    private double velocityElevation;
+
+    public float timeToWaitVelocity;
+    private float timeWaited = 0;
+    private float timeStart;
+
     public GPS gps;
     public float distance_multiplier;
     public float elevation_multiplier;
@@ -40,6 +58,7 @@ public class Airplane : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        timeStart = (float)((DateTime.Now.Ticks) / TimeSpan.TicksPerMillisecond);
         SetPosition();
         //StartCoroutine(LateStart());
     }
@@ -60,8 +79,29 @@ public class Airplane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if ((((float)(DateTime.Now.Ticks) / TimeSpan.TicksPerMillisecond)) - timeStart >= timeToWaitVelocity) {
+            pos2_longitude = Longitude;
+            pos2_latitude = Latitude;
+            pos2_elevation = Elevation;
+        }
+
+        if (!grabbedPos1)
+        {
+            pos1_latitude = Latitude;
+            pos1_longitude = Longitude;
+            pos1_elevation = Elevation;
+            grabbedPos1 = true;
+        }
+
+        // Calculate velocity
+        longitudeVelocity = (pos2_longitude - pos1_longitude) / timeWaited;
+        latitudeVelocity = (pos2_latitude - pos1_latitude) / timeWaited;
+     
+
         Debug.Log("distance from player to airport (x): " + transform.position.x);
         Debug.Log("distance from player to airport (y): " + transform.position.y);
         Debug.Log("distance from player to airport (z): " + transform.position.z);
+
     }
+
 }
