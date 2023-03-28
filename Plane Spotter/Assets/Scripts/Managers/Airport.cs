@@ -52,12 +52,16 @@ public class Airport : MonoBehaviour
         // object position in the real world is affected by the direction of
         // the camera, specifically when the app opens. so offset it here
         float camYaw = Input.gyro.attitude.eulerAngles.x;
+<<<<<<< HEAD
         if(camYaw >= 180f)
         {
             //ex: 182 = 182 - 360 = -178
             camYaw -= 360;
         }
         transform.RotateAround(gps.transform.position, Vector3.up, -camYaw);
+=======
+        transform.RotateAround(gps.transform.position, Vector3.up, -Input.compass.trueHeading);
+>>>>>>> c580c91 (use compass to fix airports in real world {few accuracy problems})
     }
 
     // Update is called once per frame
