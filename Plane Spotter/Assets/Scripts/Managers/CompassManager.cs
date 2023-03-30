@@ -23,8 +23,15 @@ public class CompassManager : MonoBehaviour
     void Update()
     {
         //yaw.text = transform.rotation.y.ToString();
-        yaw.text = "Cam Rot (Yaw): " + Input.gyro.attitude.eulerAngles.x.ToString();
-        transform.rotation = Quaternion.Euler(0f, Input.gyro.attitude.eulerAngles.y, 0f);
+        //yaw.text = "Cam Rot (Yaw): " + Input.gyro.attitude.eulerAngles.x.ToString();
+        float yAngle = Input.gyro.attitude.eulerAngles.x;
+        if(yAngle >= 180f)
+        {
+            //ex: 182 = 182 - 360 = -178
+            yAngle -= 360;
+        }
+        yaw.text = "Cam Rot (Yaw): " + yAngle.ToString();
+        //transform.rotation = Quaternion.Euler(0f, Input.gyro.attitude.eulerAngles.y, 0f);
 
         Debug.Log("Is Gyro Enabled: " + Input.gyro.enabled);
         Debug.Log("Input Gyro: " + Input.gyro.attitude);
