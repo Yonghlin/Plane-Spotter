@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1236,6 +1236,36 @@ PrefabInstance:
       propertyPath: gps
       value: 
       objectReference: {fileID: 1354141932}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: Latitude
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: Elevation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: Longitude
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: distance_multiplier
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: elevation_multiplier
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: waitTimeBeforeInstantiation
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
       propertyPath: m_RootOrder
@@ -1915,7 +1945,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planeBaseObject: {fileID: 1900730458}
   GPS: {fileID: 1354141932}
-  flightSearchOffset: 0
+  flightSearchOffset: 10
   ApiKey: Aa8nPI8MFtpMlAHwhHiMidwp2odHGJY5
   query: 0
   lat: 44.953469
