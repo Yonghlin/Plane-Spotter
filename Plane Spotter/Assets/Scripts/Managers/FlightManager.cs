@@ -1,82 +1,70 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Net.Http;
-using System.Net.Mime;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.Networking;
+using System.Collections;
+using Newtonsoft.Json;
 
-using gps = GPS;
-
-public struct Last_Position
-{
-    public string fa_flight_id;
-    public double altitude;
-    public string altitude_change;
-    public double groundspeed;
-    public double heading;
-    public double latitude;
-    public double longitude;
-    public string timestamp;
-}
-
-public struct Origin
-{
-    public string code;
-    public string code_icao;
-    public string code_iata;
-    public string code_lid;
-    public string timezome;
-    public string name;
-    public string city;
-    public string airport_info_url;
-}
-
-public struct Destination
-{
-    public string code;
-    public string code_icao;
-    public string code_iata;
-    public string code_lid;
-    public string timezome;
-    public string name;
-    public string city;
-    public string airport_info_url;
-}
-
-public struct FlightData
+public class Flight
 {
     public string ident;
-    public string ident_icao;
-    public string ident_iata;
     public string fa_flight_id;
-    public string actual_off;
-    public string actual_on;
-    public bool foresight_predictions_available;
-
-    public Last_Position last_position;
     public Origin origin;
-    public string destination;
+    public Destination destination;
+    public LastPosition last_position;
+    public string ident_prefix;
 }
 
-public class FlightSet
+public class Origin
 {
-    public List<FlightData> planes = new List<FlightData>();
+    public string code;
+    public string name;
+    public string city;
+    public string airport_info_url;
 }
+
+public class Destination
+{
+    public string code;
+    public string name;
+    public string city;
+    public string airport_info_url;
+}
+
+public class LastPosition
+{
+    public string fa_flight_id;
+    public int altitude;
+    public int groundspeed;
+    public int heading;
+    public double latitude;
+    public double longitude;
+}
+
+public class Links
+{
+    public string next;
+}
+
+public class RootObject
+{
+    public Links links;
+    public int num_pages;
+    public List<Flight> flights;
+}
+
+
 
 public class FlightManager : MonoBehaviour
 {
-    private FlightSet planes = new FlightSet();
+    private List<Flight> flights;
 
     private List<GameObject> planePointers = new List<GameObject>();
 
     public GameObject planeBaseObject;
 
-    public gps GPS;
+    public GPS GPS;
+
+    public int flightSearchOffset;
 
     public string ApiKey;
 
@@ -94,10 +82,7 @@ public class FlightManager : MonoBehaviour
 
     }
 
-    public int GetNumPlanes()
-    {
-        return planes.planes.Count;
-    }
+    
 
     public double query;
     public double lat;
@@ -107,6 +92,10 @@ public class FlightManager : MonoBehaviour
 
     IEnumerator GetFlightsFromFA()
     {
+        lat = GPS.getLatitude();
+        lon = GPS.getLongitude();
+        otherlat = lat + flightSearchOffset;
+        otherlon = lon + flightSearchOffset; 
         using (UnityWebRequest request = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/flights/search?" +
                     "query=-latlong+%22" +
                     lat.ToString() + "+" +
@@ -125,19 +114,21 @@ public class FlightManager : MonoBehaviour
             {
                 Debug.Log("FLIGHTMANAGER: Successfully got text");
                 var text = request.downloadHandler.text;
-                Debug.Log($"{text}");
-                httpResult = text;
-                planes = JsonUtility.FromJson<FlightSet>(text);
-                Debug.Log(GetNumPlanes());
-                SpawnPlanes();
-                yield return planes;
+                // Assuming the JSON string is stored in a variable named jsonString
+                Debug.Log("About to parse JSON");
+                //RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(text);
+                RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(text);
+                Debug.Log("num planes: " + rootObject.flights.Count);
+                flights = rootObject.flights;
+                
+                yield return flights;
             }
         }
     }
 
-    public void SpawnPlanes()
+    public void SpawnPlanes(List<Flight> flights)
     {
-        foreach (FlightData plane in planes.planes)
+        foreach (Flight plane in flights)
         {
             Debug.Log("Spawning plane: " + plane.ident);
             GameObject planeobject = Instantiate(planeBaseObject);
@@ -149,6 +140,7 @@ public class FlightManager : MonoBehaviour
             ap.Code = plane.origin.code;
             ap.PlaneId = plane.ident;
 
+          
             planeobject.SetActive(true);
         }
     }

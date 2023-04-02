@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1231,6 +1231,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AirplanePrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: gps
+      value: 
+      objectReference: {fileID: 1354141932}
     - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
       propertyPath: m_RootOrder
@@ -1862,7 +1867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a12c90f87305f54c9ab88e9c65562b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrow: {fileID: 0}
+  arrow: {fileID: 1418156258}
   Gps: {fileID: 1354141932}
   AirportBaseObject: {fileID: 1418156258}
   ApiKey: veQykXbTGvP744W5wh6aeOXzBrDj2A5c
@@ -1895,7 +1900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a85efdf90d078948afebef63f3e6d48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yaw: {fileID: 0}
+  yaw: {fileID: 590536898}
 --- !u!114 &1354141936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1910,6 +1915,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planeBaseObject: {fileID: 1900730458}
   GPS: {fileID: 1354141932}
+  flightSearchOffset: 0
   ApiKey: Aa8nPI8MFtpMlAHwhHiMidwp2odHGJY5
   query: 0
   lat: 44.953469
