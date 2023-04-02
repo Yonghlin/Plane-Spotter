@@ -13,6 +13,7 @@ public class ToggleDebug : MonoBehaviour
     public TMP_Text altitude;
     public TMP_Text timesRun;
     public TMP_Text airportCount;
+    public GetUserSettings getUserSettings;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,11 @@ public class ToggleDebug : MonoBehaviour
         altitude.enabled = false;
         timesRun.enabled = false;
         airportCount.enabled = false;
+    }
+
+    private void Update()
+    {
+        toggleMenu.gameObject.SetActive(getUserSettings.getDebugMenuState());
     }
 
     void toggleMenuVisibility(){
