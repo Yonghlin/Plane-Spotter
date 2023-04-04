@@ -1,38 +1,58 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
+using System.Net.Http;
+using System.Net.Mime;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Networking;
 
 using gps = GPS;
-public class Airport
-{
-    public string Code { get; set; }
-    public string Name { get; set; }
-    public double Elevation { get; set; }
-    public double Longitude { get; set; }
-    public double Latitude { get; set; }
+//public class AirportData
+//{
+//    public string Code { get; set; }
+//    public string Name { get; set; }
+//    public double Elevation { get; set; }
+//    public double Longitude { get; set; }
+//    public double Latitude { get; set; }
 
-    public Airport(string code, string name, double elevation,  double longitude, double latitude)
-    {
-        this.Code = code;
-        this.Name = name;
-        this.Elevation = elevation;
-        this.Longitude = longitude;
-        this.Latitude = latitude;
-    }
+//    public AirportData(string code, string name, double elevation, double longitude, double latitude)
+//    {
+//        this.Code = code;
+//        this.Name = name;
+//        this.Elevation = elevation;
+//        this.Longitude = longitude;
+//        this.Latitude = latitude;
+//    }
+//}
+
+[Serializable]
+public struct AirportData
+{
+    public string airport_code;
+    public string alternate_ident;
+    public string name;
+    public double elevation;
+    public string city;
+    public string state;
+    public double latitude;
+    public double longitude;
+    public string timezone;
+    public string country_code;
+    public string wiki_url;
+    public string airport_flights_url;
+    public double distance;
+    public double heading;
+    public string direction;
 }
 
+[Serializable]
 public class AirportSet
 {
-    public List<Airport> airports = new List<Airport>();
-    
-    public void addAirport(Airport airport)
-    {
-        airports.Add(airport);
-    }
-
-    public List<Airport> GetAirports() { return airports; }
-
+    public List<AirportData> airports = new List<AirportData>();
 }
 
 public class AirportManager : MonoBehaviour
@@ -45,29 +65,23 @@ public class AirportManager : MonoBehaviour
 
     public gps Gps;
 
+    public GameObject AirportBaseObject;
 
+    public string ApiKey;
+
+    public double Radius;
+
+
+    public double lat;
+    public double lon;
+    public double altitude;
+
+    private string httpResult;
     // Start is called before the first frame update
     void Start()
     {
-        airports.addAirport(new Airport("N68", "Franklin County Rgnl", 687.9, -77.6432563, 39.9729617));
-        airports.addAirport(new Airport("W05", "Gettysburg Rgnl", 553.2, -77.27465, 39.8413092));
-        airports.addAirport(new Airport("N94", "Carlisle", 510.1, -77.1742736, 40.1879144));
-        airports.addAirport(new Airport("W73", "Mid Atlantic Soaring Center", 573, -77.3513761, 39.75704));
-        airports.addAirport(new Airport("KHGR", "Hagerstown Rgnl", 703.1, -77.7265, 39.7085));
-        airports.addAirport(new Airport("07N", "Bermudian Valley Airpark", 470, -77.0038667, 40.0167617));
-        airports.addAirport(new Airport("KTVH", "York", 494.7, -76.8730278, 39.917));
-        airports.addAirport(new Airport("0P8", "Lazy B Ranch", 476, -76.8153, 40.0244236));
-        airports.addAirport(new Airport("KCXY", "Capital City", 346.7, -76.8513611, 40.2171389));
-        airports.addAirport(new Airport("P34", "Mifflintown", 545, -77.4056667, 40.5989444));
-        airports.addAirport(new Airport("KDMW", "Carroll Co Rgnl", 789.2, -77.0076667, 39.6082778));
-        airports.addAirport(new Airport("KMDT", "Harrisburg Intl", 310, -76.7626192, 40.1931917));
-        airports.addAirport(new Airport("W35", "Potomac Airpark", 412.5, -78.1660833, 39.6926111));
-        airports.addAirport(new Airport("P17", "Greater Breezewood Rgnl", 1345, -78.2977333, 39.8742681));
 
-        foreach(Airport airport in airports.airports)
-        {
-            Instantiate(arrow, new Vector3((float)airport.Latitude - (float) Gps.getLatitude(), (float)airport.Elevation - (float) Gps.getAltitude(), (float)airport.Longitude - (float) Gps.getLongitude()), Quaternion.Euler(90, 0, 0));
-        }
+        StartCoroutine(GetAirportsFromFA());
     }
 
     // Update is called once per frame
@@ -84,5 +98,50 @@ public class AirportManager : MonoBehaviour
     public int GetNumAirports()
     {
         return airports.airports.Count;
+    }
+
+    IEnumerator GetAirportsFromFA()
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/airports/nearby?" +
+                        "latitude=" + lat.ToString() +
+                        "&longitude=" + lon.ToString() +
+                        "&radius=" + Radius))
+        {
+            request.SetRequestHeader("Content-Type", "application/json");
+            request.SetRequestHeader("x-apikey", ApiKey);
+            yield return request.SendWebRequest();
+            if(request.isHttpError || request.isNetworkError)
+            {
+                Debug.Log(request.error);
+            }
+            else
+            {
+                Debug.Log("AIRPORTMANAGER: Successfully got text");
+                var text = request.downloadHandler.text;
+                Debug.Log($"{text}");
+                httpResult = text;
+                airports = JsonUtility.FromJson<AirportSet>(text);
+                Debug.Log(GetNumAirports());
+                SpawnAirports();
+                yield return airports;
+            }
+        }
+    }
+
+    public void SpawnAirports()
+    {
+        foreach (AirportData airport in airports.airports)
+        {
+            Debug.Log("Spawning airport: " + airport.name);
+            GameObject na = Instantiate(AirportBaseObject);
+            Airport ap = na.GetComponent<Airport>();
+            ap.Elevation = airport.elevation;
+            ap.Latitude = airport.latitude;
+            ap.Code = airport.airport_code;
+            ap.Longitude = airport.longitude;
+            ap.Name = airport.name;
+
+            na.SetActive(true);
+        }
     }
 }
