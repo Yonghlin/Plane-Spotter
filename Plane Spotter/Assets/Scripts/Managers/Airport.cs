@@ -82,19 +82,18 @@ public class Airport : MonoBehaviour
         SetPosition();
         // object position in the real world is affected by the direction of
         // the camera, specifically when the app opens. so offset it here
-<<<<<<< HEAD
+
         float camYaw = Input.gyro.attitude.eulerAngles.x;
-<<<<<<< HEAD
+
         if(camYaw >= 180f)
         {
             //ex: 182 = 182 - 360 = -178
             camYaw -= 360;
         }
         transform.RotateAround(gps.transform.position, Vector3.up, -camYaw);
-=======
+
         transform.RotateAround(gps.transform.position, Vector3.up, -Input.compass.trueHeading);
->>>>>>> c580c91 (use compass to fix airports in real world {few accuracy problems})
-=======
+
         float sum = 0;
         for (int i = 0; i < lastCompassReads.Length; i++)
         {
@@ -103,7 +102,6 @@ public class Airport : MonoBehaviour
         float avg = sum / lastCompassReads.Length;
         // use the average of multiple compass readings to improve accuracy
         transform.RotateAround(gps.transform.position, Vector3.up, -avg);
->>>>>>> 91f38d3 (add compass accuracy ideas)
     }
 
     // Update is called once per frame

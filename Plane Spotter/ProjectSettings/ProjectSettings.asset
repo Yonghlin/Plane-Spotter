@@ -250,8 +250,8 @@ PlayerSettings:
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: '{inproject}: KeyStore.keystore'
-  AndroidKeyaliasName: planespotterkeystore
+  AndroidKeystoreName: '{inproject}: key.keystore'
+  AndroidKeyaliasName: key
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
