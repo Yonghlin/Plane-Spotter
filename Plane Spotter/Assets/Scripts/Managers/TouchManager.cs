@@ -1,46 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-[RequireComponent(typeof(ARRaycastManager))]
 public class TouchManager : MonoBehaviour
 {
-    public PopUpManager manager;
+    private Camera arCamera;
 
-    private ARRaycastManager _arRaycastManager;
-    private Vector2 touchPosition;
+    public PopUpManager popup;
 
-    static List<ARRaycastHit> hits = new List<ARRaycastHit>();
-
-    private void Awake()
+    void Start()
     {
-        _arRaycastManager = GetComponent<ARRaycastManager>();
+        arCamera = GetComponent<Camera>();
     }
 
-    bool TryGetTouchPosition(out Vector2 touchPosition)
-    {
-        if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            touchPosition = Input.GetTouch(0).position;
-            return true;
-        }
-        touchPosition = default;
-        return false;
-    }
     void Update()
     {
-        if(!TryGetTouchPosition(out Vector2 touchPosition))
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            return;
-        }
+                // Check if the touch is over a UI element
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+            {
+                return;
+            }
 
-        if(_arRaycastManager.Raycast(touchPosition, hits))
-        {
-            var hitObject = hits[0];
-            Debug.Log("Object Hit" + hitObject.trackable.gameObject.GetType());
+            Ray ray = arCamera.ScreenPointToRay(Input.GetTouch(0).position);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                // Check if the hit object is the airport
+                if (hit.collider.gameObject.CompareTag("Airport"))
+                {
+                    // Do something with the airport
+                    //hit.collider.gameObject.SetActive(false);
+                    popup.enableAirportPopup(hit.collider.gameObject);
+                    Debug.Log("Airport touched!");
+                }
+            }
         }
     }
-
 }

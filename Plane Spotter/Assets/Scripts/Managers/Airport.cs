@@ -26,6 +26,31 @@ public class Airport : MonoBehaviour
     public float distance_multiplier;
     public float elevation_multiplier;
 
+    public string getCode()
+    {
+        return Code;
+    }
+
+    public string getElevation()
+    {
+        return Elevation.ToString();
+    }
+
+    public string getName()
+    {
+        return Name;
+    }
+
+    public string getLongitude()
+    {
+        return Longitude.ToString();
+    }
+
+    public string getLatitude()
+    {
+        return Latitude.ToString();
+    }
+
     private void SetPosition()
     {
         // convert latitude/longitude to x/y coordinates

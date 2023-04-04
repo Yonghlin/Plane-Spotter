@@ -573,6 +573,50 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &309551297
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 309551299}
+  - component: {fileID: 309551298}
+  m_Layer: 0
+  m_Name: Settings Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &309551298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309551297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abde2f96dc5d049a9974119dde00f790, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &309551299
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309551297}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 267.80475, y: 1202.1295, z: -82.01132}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &471785641
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,6 +627,7 @@ GameObject:
   m_Component:
   - component: {fileID: 471785643}
   - component: {fileID: 471785642}
+  - component: {fileID: 471785644}
   m_Layer: 0
   m_Name: Scene Managers
   m_TagString: Untagged
@@ -617,6 +662,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &471785644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471785641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f1ad3138d7c940c991e6fed3a79766f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MenuItems:
+  - {fileID: 965524976}
+  - {fileID: 778583923}
+  MenuText:
+  - {fileID: 910451098}
+  - {fileID: 941915424}
+  - {fileID: 19579595}
+  - {fileID: 1908160388}
+  - {fileID: 75587049}
+  - {fileID: 527747180}
+  - {fileID: 622467673}
+  - {fileID: 1324003469}
+  - {fileID: 1830667512}
+  - {fileID: 910292466}
+  - {fileID: 2078436697}
+  - {fileID: 1793637850}
+  - {fileID: 643059959}
+  userSettings: {fileID: 309551298}
 --- !u!1 &483231089
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,6 +1175,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 643059957}
   m_CullTransparentMesh: 1
+--- !u!1 &778583923 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1703303561323484, guid: d0c460c7e3992194cb7ab7bc605d6985,
+    type: 3}
+  m_PrefabInstance: {fileID: 2130425331}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &820025735
 GameObject:
   m_ObjectHideFlags: 0
@@ -1192,8 +1273,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2130425332}
   - {fileID: 965524977}
+  - {fileID: 2130425332}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1717,7 +1798,7 @@ RectTransform:
   - {fileID: 1830667511}
   - {fileID: 910292465}
   m_Father: {fileID: 820025739}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2343,7 +2424,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000045776367, y: 216.3853}
+  m_AnchoredPosition: {x: -0.000045776367, y: 438.58484}
   m_SizeDelta: {x: 500, y: 114.5362}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1908404862
@@ -2403,7 +2484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2465,7 +2546,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000045776367, y: 467.18}
+  m_AnchoredPosition: {x: -0.000045776367, y: 689.3795}
   m_SizeDelta: {x: 500, y: 134.47}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1967152199
@@ -2525,7 +2606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2717,7 +2798,7 @@ PrefabInstance:
     - target: {fileID: 224269059662225402, guid: d0c460c7e3992194cb7ab7bc605d6985,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 493.51825
+      value: 745
       objectReference: {fileID: 0}
     - target: {fileID: 224739566112570662, guid: d0c460c7e3992194cb7ab7bc605d6985,
         type: 3}
@@ -2732,7 +2813,7 @@ PrefabInstance:
     - target: {fileID: 224739566112570662, guid: d0c460c7e3992194cb7ab7bc605d6985,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224739566112570662, guid: d0c460c7e3992194cb7ab7bc605d6985,
         type: 3}
@@ -2884,7 +2965,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000015258789, y: 336.8005}
+  m_AnchoredPosition: {x: -0.000015258789, y: 559}
   m_SizeDelta: {x: 500, y: 126.2906}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2134198718
@@ -2956,7 +3037,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
