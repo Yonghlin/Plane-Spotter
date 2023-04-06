@@ -18,6 +18,8 @@ public class Airport : MonoBehaviour
     public float waitTimeBeforeInstantiation;
     [Range(10, 60)]
     public int maxCompassInitChecks;
+    [Range(0, 2)]
+    public float rotationalSpeed;
 
     private int compassIter = 0;
     private float[] lastCompassReads;
@@ -61,9 +63,8 @@ public class Airport : MonoBehaviour
         // get the position binding script
         PositionBindManager posManager = this.GetComponent<PositionBindManager>();
         // set the bound position
-        //posManager.SetBoundPosAndScale(this.gameObject, unityCoords);
-        // TODO set this back
-        transform.position = unityCoords;
+        posManager.SetBoundPosAndScale(this.gameObject, unityCoords);
+        //transform.position = unityCoords;
     }
 
     // Start is called before the first frame update
@@ -90,9 +91,9 @@ public class Airport : MonoBehaviour
             //ex: 182 = 182 - 360 = -178
             camYaw -= 360;
         }
-        transform.RotateAround(gps.transform.position, Vector3.up, -camYaw);
+        //transform.RotateAround(gps.transform.position, Vector3.up, -camYaw);
 
-        transform.RotateAround(gps.transform.position, Vector3.up, -Input.compass.trueHeading);
+        //transform.RotateAround(gps.transform.position, Vector3.up, -Input.compass.trueHeading);
 
         float sum = 0;
         for (int i = 0; i < lastCompassReads.Length; i++)
@@ -100,6 +101,7 @@ public class Airport : MonoBehaviour
             sum += lastCompassReads[i];
         }
         float avg = sum / lastCompassReads.Length;
+
         // use the average of multiple compass readings to improve accuracy
         transform.RotateAround(gps.transform.position, Vector3.up, -avg);
     }
@@ -115,19 +117,13 @@ public class Airport : MonoBehaviour
             // more accurately
 
             // wraps back around to the beginning of the array, updating old values with new ones
-            float compHeading = Input.compass.trueHeading;
-            // if the phone is at around 360deg, it can wrap to 0, and both values close to
-            // 360 and 0 will be added, skewing the results and putting the airport objects
-            // in the wrong positions by 180deg. correct it here by discarding values too close
-            if (compHeading < 340 && compHeading > 20)
-            {
-                lastCompassReads[compassIter % maxCompassInitChecks] = Input.compass.trueHeading;
-                compassIter += 1;
-            }
+            // merge trueHeading with magneticHeading to (hopefully) improve accuracy
+            lastCompassReads[compassIter     % maxCompassInitChecks] = Input.compass.magneticHeading;
+            lastCompassReads[compassIter + 1 % maxCompassInitChecks] = Input.compass.trueHeading;
+            compassIter += 2;
         }
-        //Debug.Log("distance from player to airport (x): " + transform.position.x);
-        //Debug.Log("distance from player to airport (y): " + transform.position.y);
-        //Debug.Log("distance from player to airport (z): " + transform.position.z);
+
+        transform.Rotate(new Vector3(0, rotationalSpeed, 0), Space.Self);
     }
 }
 
