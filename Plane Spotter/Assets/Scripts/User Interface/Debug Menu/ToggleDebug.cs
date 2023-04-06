@@ -13,6 +13,8 @@ public class ToggleDebug : MonoBehaviour
     public TMP_Text altitude;
     public TMP_Text timesRun;
     public TMP_Text airportCount;
+    public TMP_Text compass;
+    public TMP_Text gyroscope;
     public GetUserSettings getUserSettings;
 
     // Start is called before the first frame update
@@ -24,6 +26,8 @@ public class ToggleDebug : MonoBehaviour
         altitude.enabled = false;
         timesRun.enabled = false;
         airportCount.enabled = false;
+        compass.enabled = false;
+        gyroscope.enabled = false;
     }
 
     private void Update()
@@ -38,12 +42,16 @@ public class ToggleDebug : MonoBehaviour
             altitude.enabled = false;
             timesRun.enabled = false;
             airportCount.enabled = false;
+            compass.enabled = false;
+            gyroscope.enabled = false;
         }else{
             longitude.enabled = true;
             latitude.enabled = true;
             altitude.enabled = true;
             timesRun.enabled = true;
             airportCount.enabled = true;
+            compass.enabled = true;
+            gyroscope.enabled = true;
         }
         isVisible = !isVisible;
     }
