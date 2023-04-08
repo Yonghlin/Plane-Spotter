@@ -119,7 +119,7 @@ public class Airport : MonoBehaviour
             // wraps back around to the beginning of the array, updating old values with new ones
             // merge trueHeading with magneticHeading to (hopefully) improve accuracy
             lastCompassReads[compassIter     % maxCompassInitChecks] = Input.compass.magneticHeading;
-            lastCompassReads[compassIter + 1 % maxCompassInitChecks] = Input.compass.trueHeading;
+            lastCompassReads[(compassIter + 1) % (maxCompassInitChecks - 1)] = Input.compass.trueHeading;
             compassIter += 2;
         }
 
