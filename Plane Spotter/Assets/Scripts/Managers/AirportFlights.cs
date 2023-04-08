@@ -40,35 +40,52 @@ public class AirportFlights : MonoBehaviour
     public string ApiKey;
     
     private string httpResult;
-    private AirportFlightData flightsToAirport;
+
+    private List<AirportFlightData> airportFlightList = new List<AirportFlightData>();
+
+    [Range(0, 7)]
+    public int daysUntilNowToGrabAirportFlights;
+    [Range(0, 2)]
+    public int daysFromNowToGrabAirportFlights;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(GetAirportFlightsFromFA());
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
-    IEnumerator GetAirportFlightsFromFA()
+
+    int GetNumAirportFlights()
     {
+        return airportFlightList.Count;
+    }
+
+    public void GetAirportFlightsFromFA()
+    {
+        Debug.Log("Function was called.");
         // get airport code from Airport.cs, attached to this script's GameObject
         string airportCode = gameObject.GetComponent<Airport>().Code;
 
-        // TODO pass in a date
+        // get start/end dates to grab airport flight info
+        string dateStart = DateTime.Now.AddDays(-daysUntilNowToGrabAirportFlights).ToString("yyyy'-'MM'-'dd");
+        string dateEnd = DateTime.Now.AddDays(daysFromNowToGrabAirportFlights).ToString("yyyy'-'MM'-'dd");
+        Debug.Log(dateStart);
+        Debug.Log(dateEnd);
 
         // grab API stuff to put into AirportFlightData struct
         using (UnityWebRequest request = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/airports/" + airportCode + "/flights?" +
                         "type=General_Aviation" +
-                        "&start=2023-04-06" + // todo nasty hardcode :(
-                        "&end=2023-04-07"))
+                        "&start=" + dateStart + // todo nasty hardcode :(
+                        "&end=" + dateEnd))
         {
             request.SetRequestHeader("Content-Type", "application/json");
             request.SetRequestHeader("x-apikey", ApiKey);
-            yield return request.SendWebRequest();
+            //yield return request.SendWebRequest();
+            request.SendWebRequest();
             if (request.isHttpError || request.isNetworkError)
             {
                 Debug.Log(request.error);
@@ -80,9 +97,12 @@ public class AirportFlights : MonoBehaviour
                 Debug.Log($"{text}");
                 httpResult = text;
 
-                // todo might need to make an AirportFlightSet that holds multiple AirportFlghtDatas
-                flightsToAirport = JsonUtility.FromJson<AirportFlightData>(text);
-                yield return flightsToAirport;
+                Debug.Log("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------Number of airport flights for "
+                    + airportCode
+                    + ": " + GetNumAirportFlights());
+                // todo add tmptexts for this?
+                airportFlightList = JsonUtility.FromJson<List<AirportFlightData>>(text);
+                // yield return airportFlightList;
             }
         }
     }

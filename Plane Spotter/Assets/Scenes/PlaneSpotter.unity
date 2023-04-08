@@ -3972,7 +3972,7 @@ PrefabInstance:
     - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: distance_multiplier
-      value: 1000
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
@@ -4100,7 +4100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c49e80bfcfd26c64194954bf426ccc3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bindDistance: 1000
+  bindDistance: 200
   cameraObject: {fileID: 1354141925}
 --- !u!65 &1418156265
 BoxCollider:
@@ -4129,6 +4129,21 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &1418156269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418156258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe6b97c00e9a32246a43b66c446b0ee3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ApiKey: veQykXbTGvP744W5wh6aeOXzBrDj2A5c
+  daysUntilNowToGrabAirportFlights: 4
+  daysFromNowToGrabAirportFlights: 1
 --- !u!1 &1435971376
 GameObject:
   m_ObjectHideFlags: 0
@@ -4529,7 +4544,6 @@ GameObject:
   - component: {fileID: 1770116924}
   - component: {fileID: 1770116927}
   - component: {fileID: 1770116926}
-  - component: {fileID: 1770116928}
   m_Layer: 0
   m_Name: TouchManager
   m_TagString: Untagged
@@ -4549,7 +4563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a048258e29a044b3d83a3a8a990f8dec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popup: {fileID: 0}
+  popup: {fileID: 1261412351}
 --- !u!4 &1770116925
 Transform:
   m_ObjectHideFlags: 0
@@ -4591,19 +4605,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Camera: {fileID: 0}
---- !u!114 &1770116928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1770116923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a048258e29a044b3d83a3a8a990f8dec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  popup: {fileID: 0}
 --- !u!1 &1896341157
 GameObject:
   m_ObjectHideFlags: 0
