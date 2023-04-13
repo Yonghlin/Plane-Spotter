@@ -13,6 +13,9 @@ public class Airport : MonoBehaviour
     public double Longitude;
     public double Latitude;
 
+    private TrajectoryLine trajectoryLine;
+    private AirportFlights airportFlights;
+
     // GPS
     [Range(1,5)]
     public float waitTimeBeforeInstantiation;
@@ -72,6 +75,10 @@ public class Airport : MonoBehaviour
     {
         lastCompassReads = new float[maxCompassInitChecks];
         StartCoroutine(LateStart());
+
+        trajectoryLine = GameObject.FindObjectOfType<TrajectoryLine>();
+        airportFlights = GetComponent<AirportFlights>();
+        airportFlights.GetAirportFlightsFromFA();
     }
 
     // https://answers.unity.com/questions/971957/how-to-initialize-after-start.html
@@ -124,6 +131,15 @@ public class Airport : MonoBehaviour
         }
 
         transform.Rotate(new Vector3(0, rotationalSpeed, 0), Space.Self);
+    }
+
+    public void ShowFlights()
+    {
+        AirportFlights airportFlights = FindObjectOfType<AirportFlights>();
+        if (airportFlights != null)
+        {
+            airportFlights.GetAirportFlightsFromFA();
+        }
     }
 }
 

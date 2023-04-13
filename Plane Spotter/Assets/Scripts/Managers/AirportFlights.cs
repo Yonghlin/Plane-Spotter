@@ -106,5 +106,4 @@ public class AirportFlights : MonoBehaviour
             }
         }
     }
-
 }
