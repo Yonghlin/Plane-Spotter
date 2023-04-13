@@ -16,19 +16,22 @@ using gps = GPS;
 [Serializable]
 public struct AirportFlightData
 {
-    public string flight_ident;
-    public string flight_number;
-    public string flight_registration;
-    public string aircraft_type;
-
-    // airport origin information
-    public string code;
-    public string timezone;
-    public string name;
-    public string city;
-
     // todo possible feature:
     // also show outgoing planes
+
+    public struct arrivals
+    {
+        public string flight_ident;
+        public string flight_number;
+        public string flight_registration;
+        public string aircraft_type;
+
+        // airport origin information
+        public string code;
+        public string timezone;
+        public string name;
+        public string city;
+    }
 }
 
 
@@ -64,7 +67,7 @@ public class AirportFlights : MonoBehaviour
         return airportFlightList.Count;
     }
 
-    public void GetAirportFlightsFromFA()
+    public IEnumerator GetAirportFlightsFromFA()
     {
         Debug.Log("Function was called.");
         // get airport code from Airport.cs, attached to this script's GameObject
@@ -76,16 +79,19 @@ public class AirportFlights : MonoBehaviour
         Debug.Log(dateStart);
         Debug.Log(dateEnd);
 
-        // grab API stuff to put into AirportFlightData struct
-        using (UnityWebRequest request = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/airports/" + airportCode + "/flights?" +
+        string call = "https://aeroapi.flightaware.com/aeroapi/airports/" + "BWI" + "/flights?" +
                         "type=General_Aviation" +
                         "&start=" + dateStart + // todo nasty hardcode :(
-                        "&end=" + dateEnd))
+                        "&end=" + dateEnd;
+        Debug.Log(call);
+
+        // grab API stuff to put into AirportFlightData struct
+        using (UnityWebRequest request = UnityWebRequest.Get(call))
         {
             request.SetRequestHeader("Content-Type", "application/json");
             request.SetRequestHeader("x-apikey", ApiKey);
-            //yield return request.SendWebRequest();
-            request.SendWebRequest();
+            yield return request.SendWebRequest();
+            /*request.SendWebRequest();*/
             if (request.isHttpError || request.isNetworkError)
             {
                 Debug.Log(request.error);
@@ -94,15 +100,18 @@ public class AirportFlights : MonoBehaviour
             {
                 Debug.Log("AIRPORTFLIGHTS: Successfully got text");
                 var text = request.downloadHandler.text;
-                Debug.Log($"{text}");
-                httpResult = text;
+                Debug.Log(text);
+
+                // todo add tmptexts for this?
+                // airportFlightList = JsonUtility.FromJson<List<AirportFlightData>>(text);
+                Newtonsoft.Json.JsonConvert.DeserializeObject(text);
 
                 Debug.Log("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------Number of airport flights for "
                     + airportCode
                     + ": " + GetNumAirportFlights());
-                // todo add tmptexts for this?
-                airportFlightList = JsonUtility.FromJson<List<AirportFlightData>>(text);
-                // yield return airportFlightList;
+
+                Debug.Log(text);
+                yield return airportFlightList;
             }
         }
     }
