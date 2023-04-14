@@ -92,8 +92,8 @@ public class FlightManager : MonoBehaviour
 
     IEnumerator GetFlightsFromFA()
     {
-        lat = GPS.getLatitude();//40.0506496;
-        lon = GPS.getLongitude(); //-77.5275351;
+        lat = /*GPS.getLatitude();//*/40.0506496;
+        lon = /*GPS.getLongitude(); //*/-77.5275351;
         //otherlat = lat + flightSearchOffset;
         //otherlon = lon + flightSearchOffset; 
         using (UnityWebRequest request = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/flights/search?" +
