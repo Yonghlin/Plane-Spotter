@@ -12,26 +12,28 @@ using UnityEngine.Networking;
 
 using gps = GPS;
 
+[Serializable]
+public class AirportFlightArrival
+{
+    public string ident;
+    public string flight_number;
+    public string flight_registration;
+    public string aircraft_type;
+
+    // airport origin information
+    public string code;
+    public string timezone;
+    public string name;
+    public string city;
+}
 
 [Serializable]
-public struct AirportFlightData
+public class AirportFlightData
 {
     // todo possible feature:
     // also show outgoing planes
 
-    public struct arrivals
-    {
-        public string flight_ident;
-        public string flight_number;
-        public string flight_registration;
-        public string aircraft_type;
-
-        // airport origin information
-        public string code;
-        public string timezone;
-        public string name;
-        public string city;
-    }
+    public List<AirportFlightArrival> arrivals;
 }
 
 
@@ -44,7 +46,8 @@ public class AirportFlights : MonoBehaviour
     
     private string httpResult;
 
-    private List<AirportFlightData> airportFlightList = new List<AirportFlightData>();
+    //private List<AirportFlightData> airportFlightList = new List<AirportFlightData>();
+    private AirportFlightData airportFlightData;
 
     [Range(0, 7)]
     public int daysUntilNowToGrabAirportFlights;
@@ -64,7 +67,7 @@ public class AirportFlights : MonoBehaviour
 
     int GetNumAirportFlights()
     {
-        return airportFlightList.Count;
+        return airportFlightData.arrivals.Count;
     }
 
     public IEnumerator GetAirportFlightsFromFA()
@@ -103,15 +106,20 @@ public class AirportFlights : MonoBehaviour
                 Debug.Log(text);
 
                 // todo add tmptexts for this?
-                // airportFlightList = JsonUtility.FromJson<List<AirportFlightData>>(text);
-                Newtonsoft.Json.JsonConvert.DeserializeObject(text);
+                //airportFlightList = JsonUtility.FromJson<List<AirportFlightData>>(text);
+                airportFlightData = Newtonsoft.Json.JsonConvert.DeserializeObject<AirportFlightData>(text);
+
+                foreach(AirportFlightArrival arrival in airportFlightData.arrivals)
+                {
+                    Debug.Log("AIRPORTFLIGHTDATA arrival flight: " + arrival.ident);
+                }
 
                 Debug.Log("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------Number of airport flights for "
                     + airportCode
                     + ": " + GetNumAirportFlights());
 
                 Debug.Log(text);
-                yield return airportFlightList;
+                yield return airportFlightData;
             }
         }
     }
