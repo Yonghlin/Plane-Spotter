@@ -3335,6 +3335,7 @@ MonoBehaviour:
   airportElevation: {fileID: 58521489}
   airportLongitude: {fileID: 2065384473}
   airportLatitude: {fileID: 1340799019}
+  showTrajectoryLines: {fileID: 128166133}
 --- !u!4 &1261412352
 Transform:
   m_ObjectHideFlags: 0
@@ -4885,7 +4886,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed254913899fc3d4dadced6adb26a62f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showTrajectoryLine: {fileID: 128166133}
+  airportNameInPopupMenu: {fileID: 740310644}
+  showTrajectoryLineInPopupMenu: {fileID: 128166133}
 --- !u!120 &1704690213
 LineRenderer:
   m_ObjectHideFlags: 0

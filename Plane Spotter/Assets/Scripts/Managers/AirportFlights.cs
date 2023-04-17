@@ -106,19 +106,11 @@ public class AirportFlights : MonoBehaviour
                 Debug.Log(text);
 
                 // todo add tmptexts for this?
-                //airportFlightList = JsonUtility.FromJson<List<AirportFlightData>>(text);
                 airportFlightData = Newtonsoft.Json.JsonConvert.DeserializeObject<AirportFlightData>(text);
-
                 foreach(AirportFlightArrival arrival in airportFlightData.arrivals)
                 {
                     Debug.Log("AIRPORTFLIGHTDATA arrival flight: " + arrival.ident);
                 }
-
-                Debug.Log("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------Number of airport flights for "
-                    + airportCode
-                    + ": " + GetNumAirportFlights());
-
-                Debug.Log(text);
                 yield return airportFlightData;
             }
         }
