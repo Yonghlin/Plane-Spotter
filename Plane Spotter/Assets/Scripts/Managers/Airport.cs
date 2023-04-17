@@ -15,6 +15,7 @@ public class Airport : MonoBehaviour
 
     private TrajectoryLine trajectoryLine;
     private AirportFlights airportFlights;
+    private bool showTrajectoryLine = false;
 
     // GPS
     [Range(1,5)]
@@ -34,6 +35,16 @@ public class Airport : MonoBehaviour
     public string getCode()
     {
         return Code;
+    }
+
+    public bool isShowingTrajectoryLine()
+    {
+        return showTrajectoryLine;
+    }
+
+    public void setShowingTrajectoryLine(bool showTrajectoryLine)
+    {
+        this.showTrajectoryLine = showTrajectoryLine;
     }
 
     public string getElevation()

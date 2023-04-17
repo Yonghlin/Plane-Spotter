@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class TrajectoryLine : MonoBehaviour
 {
-    public Toggle showTrajectoryLine;
+    public TMPro.TMP_Text airportNameInPopupMenu;
+    public Toggle showTrajectoryLineInPopupMenu;
 
     private Transform airportTransform;
     private LineRenderer lineRenderer;
@@ -24,13 +25,35 @@ public class TrajectoryLine : MonoBehaviour
         airportTransform = transform.parent;
 
         // start listening for when the user checks the box
-        showTrajectoryLine.onValueChanged.AddListener(delegate
+        showTrajectoryLineInPopupMenu.onValueChanged.AddListener(delegate
         {
-            if (showTrajectoryLine.isOn)
+            if (showTrajectoryLineInPopupMenu.isOn)
             {
-                // Tell the AirportFlights script to query for incoming/outgoing flight info
-                AirportFlights flights = GetComponentInParent<AirportFlights>();
-                StartCoroutine(flights.GetAirportFlightsFromFA());
+                // nasty.
+                // showTrajectoryLine isn't unique, and there's a listener for every airport trajectoryline object.
+                // we only want to call the API once, so check if the airport's name in the popup menu
+                // matches the airport object's name
+                if (airportNameInPopupMenu.text == GetComponentInParent<Airport>().Name)
+                {
+                    // Set the airport's toggled value
+                    GetComponentInParent<Airport>().setShowingTrajectoryLine(true);
+
+                    // Tell the AirportFlights script to query for incoming/outgoing flight info
+                    AirportFlights flights = GetComponentInParent<AirportFlights>();
+                    StartCoroutine(flights.GetAirportFlightsFromFA());
+                }
+            }
+            else
+            {
+                // nasty.
+                // showTrajectoryLine isn't unique, and there's a listener for every airport trajectoryline object.
+                // we only want to call the API once, so check if the airport's name in the popup menu
+                // matches the airport object's name
+                if (airportNameInPopupMenu.text == GetComponentInParent<Airport>().Name)
+                {
+                    // Set the airport's toggled value
+                    GetComponentInParent<Airport>().setShowingTrajectoryLine(false);
+                }
             }
         });
 
@@ -46,7 +69,7 @@ public class TrajectoryLine : MonoBehaviour
         }
 
         // if the user toggled the trajectoryline on in the popup menu
-        if (showTrajectoryLine.isOn)
+        if (showTrajectoryLineInPopupMenu.isOn)
         {
                         // Find the closest flight to the airport
             Transform closestFlight = null;

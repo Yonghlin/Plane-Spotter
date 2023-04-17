@@ -12,6 +12,7 @@ public class PopUpManager : MonoBehaviour
     public TMP_Text airportElevation;
     public TMP_Text airportLongitude;
     public TMP_Text airportLatitude;
+    public Toggle showTrajectoryLines;
 
     bool airportPopUpVisible = false;
     //bool airplanePopUpVisible = false;
@@ -28,6 +29,7 @@ public class PopUpManager : MonoBehaviour
         airportElevation.text = airport.GetComponent<Airport>().getElevation();
         airportLongitude.text = airport.GetComponent<Airport>().getLongitude();
         airportLatitude.text = airport.GetComponent<Airport>().getLatitude();
+        showTrajectoryLines.isOn = airport.GetComponent<Airport>().isShowingTrajectoryLine();
 
         airportPopup.SetActive(true);
     }
