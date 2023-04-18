@@ -41,6 +41,22 @@ public class TrajectoryLine : MonoBehaviour
                     // Tell the AirportFlights script to query for incoming/outgoing flight info
                     AirportFlights flights = GetComponentInParent<AirportFlights>();
                     StartCoroutine(flights.GetAirportFlightsFromFA());
+
+                    //This will grab all the Airplanes in the scene
+                    var airplanesInScene = GameObject.FindGameObjectsWithTag("Airplane");
+                    // This will compare all the airplanes in the scene with the incoming airplanes to the airport
+                    // and check if airportFlightData has the airplane and it will add it to flightTransform
+                    flightTransforms.Clear();
+                    foreach (GameObject airplane in airplanesInScene)
+                    {
+                        foreach (AirportFlightArrival arrival in flights.airportFlightData.arrivals)
+                        {
+                            if (airplane.GetComponent<Airplane>().Name == arrival.name)
+                            {
+                                flightTransforms.Add(airplane.transform);
+                            }
+                        }
+                    }
                 }
             }
             else
@@ -101,10 +117,5 @@ public class TrajectoryLine : MonoBehaviour
                 lineRenderer.enabled = false;
             }
         }
-    }
-
-    public void AddFlightTransform(Transform flightTransform)
-    {
-        flightTransforms.Add(flightTransform);
     }
 }
