@@ -42,7 +42,7 @@ public class TouchManager : MonoBehaviour
                     //hit.collider.gameObject.SetActive(false);
                     popup.enableAirportPopup(hit.collider.gameObject);
                     Debug.Log("Airport touched!");
-
+                    
                     // Tell the AirportFlights script to query for incoming/outgoing flight info
                     hit.collider.gameObject.GetComponent<AirportFlights>().GetAirportFlightsFromFA();
                 }
