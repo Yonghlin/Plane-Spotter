@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
+using TMPro;
 
 using gps = GPS;
 //public class AirportData
@@ -65,12 +66,15 @@ public class AirportManager : MonoBehaviour
 
     public gps Gps;
 
+    public CacheManager cacheManager; 
+
     public GameObject AirportBaseObject;
 
     public string ApiKey;
 
     public double Radius;
 
+    public TMP_Text dataMethod; 
 
     public double lat;
     public double lon;
@@ -80,8 +84,16 @@ public class AirportManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        StartCoroutine(GetAirportsFromFA());
+        if(cacheManager.hasCachedData() && cacheManager.checkAirportValidityStatus((float)lat, (float)lon))
+        {
+            dataMethod.text = "Using Cached Data";
+            StartCoroutine(getCachedAirportData());
+        }
+        else {
+            dataMethod.text = "Using API";
+            StartCoroutine(GetAirportsFromFA());
+        }
+        
     }
 
     // Update is called once per frame
@@ -120,12 +132,23 @@ public class AirportManager : MonoBehaviour
                 var text = request.downloadHandler.text;
                 Debug.Log($"{text}");
                 httpResult = text;
+                cacheManager.saveCurrentAirportState(text, (float)lat, (float)lon);
                 airports = JsonUtility.FromJson<AirportSet>(text);
                 Debug.Log(GetNumAirports());
                 SpawnAirports();
                 yield return airports;
             }
         }
+    }
+
+    private IEnumerator getCachedAirportData()
+    {
+        String CachedJSON = cacheManager.getCurrentlyCachedAirportData();
+        airports = JsonUtility.FromJson<AirportSet>(CachedJSON);
+        Debug.Log(GetNumAirports());
+        SpawnAirports();
+
+        yield return airports;
     }
 
     public void SpawnAirports()
