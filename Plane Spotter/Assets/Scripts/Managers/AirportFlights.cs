@@ -47,7 +47,7 @@ public class AirportFlights : MonoBehaviour
     private string httpResult;
 
     //private List<AirportFlightData> airportFlightList = new List<AirportFlightData>();
-    private AirportFlightData airportFlightData;
+    public AirportFlightData airportFlightData { get; set; }
 
     [Range(0, 7)]
     public int daysUntilNowToGrabAirportFlights;
@@ -82,7 +82,7 @@ public class AirportFlights : MonoBehaviour
         Debug.Log(dateStart);
         Debug.Log(dateEnd);
 
-        string call = "https://aeroapi.flightaware.com/aeroapi/airports/" + "BWI" + "/flights?" +
+        string call = "https://aeroapi.flightaware.com/aeroapi/airports/" + airportCode + "/flights?" +
                         "type=General_Aviation" +
                         "&start=" + dateStart + // todo nasty hardcode :(
                         "&end=" + dateEnd;

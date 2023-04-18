@@ -42,18 +42,6 @@ public class TouchManager : MonoBehaviour
                     popup.enableAirportPopup(objsHit[0].collider.gameObject);
                 }
             }
-
-            /*if (Physics.Raycast(ray, out hit))
-            {
-                // Check if the hit object is the airport
-                if (hit.collider.tag == "Airport")
-                {
-                    // Do something with the airport
-                    //hit.collider.gameObject.SetActive(false);
-                    popup.enableAirportPopup(hit.collider.gameObject);
-                    //Debug.Log("Airport touched!");
-                }
-            }*/
         }
     }
 }

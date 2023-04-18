@@ -2222,6 +2222,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AirplanePrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 2278066910530459692, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: m_TagString
+      value: Airplane
+      objectReference: {fileID: 0}
     - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
       propertyPath: gps
