@@ -84,23 +84,24 @@ public class TrajectoryLine : MonoBehaviour
             return;
         }
 
-        // if the user toggled the trajectoryline on in the popup menu
-        if (showTrajectoryLineInPopupMenu.isOn)
+        // if the airport trajectory line is enabled, which is set by the user checking the checkbox
+        // in the popup menu
+        if (GetComponentInParent<Airport>().isShowingTrajectoryLine())
         {
-                        // Find the closest flight to the airport
+            // Find the closest flight to the airport
+            // make starting value very high to allow for actual distances to compare as closer
+            double closestDistance = 10000.0;
             Transform closestFlight = null;
-            float closestDistance = float.MaxValue;
+            double latAirport = transform.parent.GetComponent<Airport>().Latitude;
+            double lonAirport = transform.parent.GetComponent<Airport>().Longitude;
             foreach (Transform flightTransform in flightTransforms)
             {
-                // todo change to latitude / altitude
-                double latAirport = transform.parent.GetComponent<Airport>().Latitude;
-                double lonAirport = transform.parent.GetComponent<Airport>().Longitude;
+                Airplane planeObj = flightTransform.gameObject.GetComponent<Airplane>();
+                double currentDistance = Mathf.Sqrt(Mathf.Pow((float) (planeObj.Latitude - latAirport), 2) + Mathf.Pow((float) (planeObj.Longitude - lonAirport), 2));
 
-                //
-                float distance = Vector3.Distance(flightTransform.position, airportTransform.position);
-                if (distance < closestDistance)
+                if (currentDistance < closestDistance)
                 {
-                    closestDistance = distance;
+                    closestDistance = currentDistance;
                     closestFlight = flightTransform;
                 }
             }
