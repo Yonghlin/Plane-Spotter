@@ -3828,6 +3828,7 @@ GameObject:
   - component: {fileID: 1354141934}
   - component: {fileID: 1354141935}
   - component: {fileID: 1354141936}
+  - component: {fileID: 1354141937}
   m_Layer: 0
   m_Name: AR Camera
   m_TagString: Untagged
@@ -4028,6 +4029,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popup: {fileID: 1261412351}
+--- !u!114 &1354141937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354141925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee884fed7e1f40744868e1a3870c2428, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  planeBaseObject: {fileID: 2046959642}
+  GPS: {fileID: 1354141932}
+  flightSearchOffset: 1
+  ApiKey: veQykXbTGvP744W5wh6aeOXzBrDj2A5c
+  query: 0
+  lat: 0
+  lon: 0
+  otherlat: 0
+  otherlon: 0
 --- !u!1 &1358751495
 GameObject:
   m_ObjectHideFlags: 0
@@ -5386,27 +5408,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 733462596}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2046959643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2046959642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee884fed7e1f40744868e1a3870c2428, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  planeBaseObject: {fileID: 2046959642}
-  GPS: {fileID: 1354141932}
-  flightSearchOffset: 1
-  ApiKey: veQykXbTGvP744W5wh6aeOXzBrDj2A5c
-  query: 0
-  lat: 0
-  lon: 0
-  otherlat: 0
-  otherlon: 0
 --- !u!114 &2046959646
 MonoBehaviour:
   m_ObjectHideFlags: 0

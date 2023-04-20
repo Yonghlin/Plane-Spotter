@@ -73,7 +73,7 @@ public class FlightManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //StartCoroutine(GetFlightsFromFA());
+        StartCoroutine(GetFlightsFromFA());
     }
 
     // Update is called once per frame
