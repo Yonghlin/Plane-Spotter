@@ -19,25 +19,27 @@ public class TouchManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        if (Input.GetMouseButton(0))
         {
+            
+        //if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        //{
                 // Check if the touch is over a UI element
-            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+           /* if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
             {
                 return;
-            }
+            }*/
 
-            Ray ray = arCamera.ScreenPointToRay(Input.GetTouch(0).position);
+            //            Ray ray = arCamera.ScreenPointToRay(Input.GetTouch(0).position);
+            Ray ray = arCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+
+            var objsHit = Physics.RaycastAll(ray);
+            if (objsHit.Length >= 1)
             {
-                // Check if the hit object is the airport
-                if (hit.collider.gameObject.CompareTag("Airport"))
+                if (objsHit[0].collider.tag == "Airport")
                 {
-                    // Do something with the airport
-                    //hit.collider.gameObject.SetActive(false);
-                    popup.enableAirportPopup(hit.collider.gameObject);
-                    Debug.Log("Airport touched!");
+                    popup.enableAirportPopup(objsHit[0].collider.gameObject);
                 }
             }
         }

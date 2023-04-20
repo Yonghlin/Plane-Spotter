@@ -114,10 +114,11 @@ public class AirportManager : MonoBehaviour
 
     IEnumerator GetAirportsFromFA()
     {
-        using (UnityWebRequest request = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/airports/nearby?" +
+        string call = "https://aeroapi.flightaware.com/aeroapi/airports/nearby?" +
                         "latitude=" + lat.ToString() +
                         "&longitude=" + lon.ToString() +
-                        "&radius=" + Radius))
+                        "&radius=" + Radius;
+        using (UnityWebRequest request = UnityWebRequest.Get(call))
         {
             request.SetRequestHeader("Content-Type", "application/json");
             request.SetRequestHeader("x-apikey", ApiKey);

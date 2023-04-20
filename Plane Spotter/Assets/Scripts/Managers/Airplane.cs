@@ -98,9 +98,9 @@ public class Airplane : MonoBehaviour
         latitudeVelocity = (pos2_latitude - pos1_latitude) / timeWaited;
      
 
-        Debug.Log("distance from player to airport (x): " + transform.position.x);
-        Debug.Log("distance from player to airport (y): " + transform.position.y);
-        Debug.Log("distance from player to airport (z): " + transform.position.z);
+        //Debug.Log("distance from player to airport (x): " + transform.position.x);
+        //Debug.Log("distance from player to airport (y): " + transform.position.y);
+        //Debug.Log("distance from player to airport (z): " + transform.position.z);
 
     }
 

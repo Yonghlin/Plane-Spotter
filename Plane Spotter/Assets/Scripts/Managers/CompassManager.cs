@@ -14,30 +14,17 @@ public class CompassManager : MonoBehaviour
         //transform.rotation = Quaternion.Euler(0, -Input.compass.trueHeading, 0);
         Input.gyro.enabled = true;
         Input.compass.enabled = true;
-        // TODO Make this work. Get airport objects to be in absolute world position,
-        // by setting camera rotation appropriately based on phone's current orientation.   
-        Quaternion attitude = Input.gyro.attitude;
+
         //transform.Rotate(-attitude.x, -attitude.y, -attitude.z, Space.Self);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //yaw.text = transform.rotation.y.ToString();
-        //yaw.text = "Cam Rot (Yaw): " + Input.gyro.attitude.eulerAngles.x.ToString();
-        float yAngle = Input.gyro.attitude.eulerAngles.x;
-        if(yAngle >= 180f)
-        {
-            //ex: 182 = 182 - 360 = -178
-            yAngle -= 360;
-        }
-        yaw.text = "Cam Rot (Yaw): " + yAngle.ToString();
-
         yaw.text = "Cam Rot (Yaw): " + Input.gyro.attitude.eulerAngles.x.ToString();
-        comp.text = "compass: " + Input.compass.trueHeading.ToString(); 
-        //transform.rotation = Quaternion.Euler(0f, Input.gyro.attitude.eulerAngles.y, 0f);
+        comp.text = "compass: " + Input.compass.magneticHeading.ToString(); 
 
-        Debug.Log("Is Gyro Enabled: " + Input.gyro.enabled);
-        Debug.Log("Input Gyro: " + Input.gyro.attitude);
+        //Debug.Log("Is Gyro Enabled: " + Input.gyro.enabled);
+        //Debug.Log("Input Gyro: " + Input.gyro.attitude);
     }
 }
