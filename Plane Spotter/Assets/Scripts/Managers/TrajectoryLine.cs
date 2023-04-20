@@ -22,6 +22,18 @@ public class TrajectoryLine : MonoBehaviour
         // hierarchy: AirportPrefab -> LineRenderer -> this script
         // get the AirportPrefab transform
         airportTransform = transform.parent;
+
+        // start listening for when the user checks the box
+        showTrajectoryLine.onValueChanged.AddListener(delegate
+        {
+            if (showTrajectoryLine.isOn)
+            {
+                // Tell the AirportFlights script to query for incoming/outgoing flight info
+                AirportFlights flights = GetComponentInParent<AirportFlights>();
+                StartCoroutine(flights.GetAirportFlightsFromFA());
+            }
+        });
+
     }
 
     private void Update()
@@ -34,9 +46,9 @@ public class TrajectoryLine : MonoBehaviour
         }
 
         // if the user toggled the trajectoryline on in the popup menu
-        if (showTrajectoryLine)
+        if (showTrajectoryLine.isOn)
         {
-            // Find the closest flight to the airport
+                        // Find the closest flight to the airport
             Transform closestFlight = null;
             float closestDistance = float.MaxValue;
             foreach (Transform flightTransform in flightTransforms)

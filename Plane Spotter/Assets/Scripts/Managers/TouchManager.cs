@@ -33,22 +33,27 @@ public class TouchManager : MonoBehaviour
             //            Ray ray = arCamera.ScreenPointToRay(Input.GetTouch(0).position);
             Ray ray = arCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+
+            var objsHit = Physics.RaycastAll(ray);
+            if (objsHit.Length >= 1)
+            {
+                if (objsHit[0].collider.tag == "Airport")
+                {
+                    popup.enableAirportPopup(objsHit[0].collider.gameObject);
+                }
+            }
+
+            /*if (Physics.Raycast(ray, out hit))
             {
                 // Check if the hit object is the airport
-                if (hit.collider.gameObject.CompareTag("Airport"))
+                if (hit.collider.tag == "Airport")
                 {
                     // Do something with the airport
                     //hit.collider.gameObject.SetActive(false);
                     popup.enableAirportPopup(hit.collider.gameObject);
-                    Debug.Log("Airport touched!");
-                    
-                    // Tell the AirportFlights script to query for incoming/outgoing flight info
-                   AirportFlights flights = hit.collider.gameObject.GetComponent<AirportFlights>();
-                    StartCoroutine(flights.GetAirportFlightsFromFA());
-
+                    //Debug.Log("Airport touched!");
                 }
-            }
+            }*/
         }
     }
 }

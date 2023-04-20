@@ -24,7 +24,7 @@ public class CompassManager : MonoBehaviour
         yaw.text = "Cam Rot (Yaw): " + Input.gyro.attitude.eulerAngles.x.ToString();
         comp.text = "compass: " + Input.compass.magneticHeading.ToString(); 
 
-        Debug.Log("Is Gyro Enabled: " + Input.gyro.enabled);
-        Debug.Log("Input Gyro: " + Input.gyro.attitude);
+        //Debug.Log("Is Gyro Enabled: " + Input.gyro.enabled);
+        //Debug.Log("Input Gyro: " + Input.gyro.attitude);
     }
 }

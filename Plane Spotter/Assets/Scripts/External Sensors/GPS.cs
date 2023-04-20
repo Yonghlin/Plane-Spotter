@@ -42,6 +42,11 @@ public class GPS : MonoBehaviour
             print("Unable to determine device location");
             yield break;
         }
+        else if (Input.location.status != LocationServiceStatus.Running)
+        {
+            Debug.Log("Location service not running");
+            yield break;
+        }
         else
         {
             // If the connection succeeded, this retrieves the device's current location and stores it in local variables
@@ -54,18 +59,22 @@ public class GPS : MonoBehaviour
 
     //Run on each frame. Checks to see if user still has permission for FineLocation and runs a coroutine to update all of the stored data
     void Update(){
+        if (Input.location.status == LocationServiceStatus.Running)
+        {
+            if (Permission.HasUserAuthorizedPermission(Permission.FineLocation) && framesRun == 180)
+            {
+                longitude = Input.location.lastData.longitude;
+                latitude = Input.location.lastData.latitude;
+                altitude = Input.location.lastData.altitude;
 
-        if(Permission.HasUserAuthorizedPermission(Permission.FineLocation) && framesRun == 180){
-            longitude = Input.location.lastData.longitude;
-            latitude = Input.location.lastData.latitude;
-            altitude = Input.location.lastData.altitude;
+                timesRun++;
 
-            timesRun++;
-
-            framesRun = 0;
-            
-        }else{
-             framesRun++;
+                framesRun = 0;
+            }
+            else
+            {
+                framesRun++;
+            }
         }
     }
     
