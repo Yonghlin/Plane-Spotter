@@ -49,10 +49,7 @@ public class Airplane : MonoBehaviour
                    distance_multiplier * (float)(Longitude - gps.getLongitude()));
         // get the position binding script
         PositionBindManager posManager = this.GetComponent<PositionBindManager>();
-        // set the bound position
-        //posManager.SetBoundPosAndScale(this.gameObject, unityCoords);
-        // TODO set this back
-        transform.position = unityCoords;
+        posManager.SetBoundPosAndScale(this.gameObject, unityCoords);
     }
 
     // Start is called before the first frame update

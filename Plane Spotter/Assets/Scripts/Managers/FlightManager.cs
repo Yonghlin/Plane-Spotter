@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Networking;
@@ -64,7 +65,9 @@ public class FlightManager : MonoBehaviour
 
     public GPS GPS;
 
-    public int flightSearchOffset;
+    public int flightSearchRadius;
+    public int secondsPerUpdate;
+    private long lastUpdatedMillis;
 
     public string ApiKey;
 
@@ -73,35 +76,50 @@ public class FlightManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        lastUpdatedMillis = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
         StartCoroutine(GetFlightsFromFA());
     }
 
     // Update is called once per frame
     void Update()
     {
+        // if it's been enough seconds for the next update, update
+        long currentTimeMillis = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+        long millisElapsed = currentTimeMillis - lastUpdatedMillis;
+        long millisPerUpdate = secondsPerUpdate * 1000;
 
+        if (millisElapsed > millisPerUpdate)
+        {
+            lastUpdatedMillis = currentTimeMillis;
+
+            // every time we update the plane positions, we recreate the game objects
+            // so we only need to do 1 API call
+            var airplanesInScene = GameObject.FindGameObjectsWithTag("Airplane");
+            foreach (GameObject airplane in airplanesInScene)
+            {
+                Destroy(airplane);
+            }
+            // respawn the planes with updated positions
+            StartCoroutine(GetFlightsFromFA());
+        }
     }
 
-    
+
 
     public double query;
-    public double lat;
-    public double lon;
-    public double otherlat;
-    public double otherlon;
 
     IEnumerator GetFlightsFromFA()
     {
-        lat = /*GPS.getLatitude();//*/40.0506496;
-        lon = /*GPS.getLongitude(); //*/-77.5275351;
-        //otherlat = lat + flightSearchOffset;
-        //otherlon = lon + flightSearchOffset; 
+        double minLat = /*GPS.getLatitude();//*/40.0506496 - flightSearchRadius;
+        double minLon = /*GPS.getLongitude(); //*/-77.5275351 - flightSearchRadius;
+        double maxLat = /*GPS.getLatitude();//*/40.0506496 + flightSearchRadius;
+        double maxLon = /*GPS.getLongitude(); //*/-77.5275351 + flightSearchRadius;
         using (UnityWebRequest request = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/flights/search?" +
                     "query=-latlong+%22" +
-                    lat.ToString() + "+" +
-                    lon.ToString() + "+" +
-                    otherlat.ToString() + "+" +
-                    otherlon.ToString() + "%22"))
+                    minLat.ToString() + "+" +
+                    minLon.ToString() + "+" +
+                    maxLat.ToString() + "+" +
+                    maxLon.ToString() + "%22"))
         {
             request.SetRequestHeader("Content-Type", "application/json");
             request.SetRequestHeader("x-apikey", ApiKey);

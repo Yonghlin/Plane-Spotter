@@ -76,9 +76,7 @@ public class Airport : MonoBehaviour
                    distance_multiplier * (float)(Longitude - gps.getLongitude()));
         // get the position binding script
         PositionBindManager posManager = this.GetComponent<PositionBindManager>();
-        // set the bound position
         posManager.SetBoundPosAndScale(this.gameObject, unityCoords);
-        //transform.position = unityCoords;
     }
 
     // Start is called before the first frame update
@@ -98,20 +96,34 @@ public class Airport : MonoBehaviour
         yield return new WaitForSeconds(waitTimeBeforeInstantiation);
         // any code here to be run AFTER other GameObject's start functions have run
         // without waiting a number of seconds, the objects won't display
-        SetPosition();
-        // object position in the real world is affected by the direction of
-        // the camera, specifically when the app opens. so offset it here
-
-        float camYaw = Input.gyro.attitude.eulerAngles.x;
+        /*float camYaw = Input.gyro.attitude.eulerAngles.x;
 
         if(camYaw >= 180f)
         {
             //ex: 182 = 182 - 360 = -178
             camYaw -= 360;
-        }
+        }*/
         //transform.RotateAround(gps.transform.position, Vector3.up, -camYaw);
-
         //transform.RotateAround(gps.transform.position, Vector3.up, -Input.compass.trueHeading);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // rotate the cubes for aesthetics
+        transform.Rotate(new Vector3(0, rotationalSpeed, 0), Space.Self);
+
+        // reset object position before rotating it around the camera
+        SetPosition();
+        // object position in the real world is affected by the direction of
+        // the camera, specifically when the app opens. so offset it here
+        // store multiple values of recent compass data to average them and spawn airports
+        // more accurately
+        // wraps back around to the beginning of the array, updating old values with new ones
+        // merge trueHeading with magneticHeading to (hopefully) improve accuracy
+        lastCompassReads[compassIter     % maxCompassInitChecks] = Input.compass.magneticHeading;
+        //lastCompassReads[(compassIter + 1) % (maxCompassInitChecks - 1)] = Input.compass.trueHeading;
+        compassIter += 2;
 
         float sum = 0;
         for (int i = 0; i < lastCompassReads.Length; i++)
@@ -122,26 +134,6 @@ public class Airport : MonoBehaviour
 
         // use the average of multiple compass readings to improve accuracy
         transform.RotateAround(gps.transform.position, Vector3.up, -avg);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // ~ the number of iterations for waitTimeBeforeInstantiation seconds
-        // to elapse, if the app runs at 60 updates per second
-        if (compassIter <= 60 * waitTimeBeforeInstantiation)
-        {
-            // store multiple values of recent compass data to average them and spawn airports
-            // more accurately
-
-            // wraps back around to the beginning of the array, updating old values with new ones
-            // merge trueHeading with magneticHeading to (hopefully) improve accuracy
-            lastCompassReads[compassIter     % maxCompassInitChecks] = Input.compass.magneticHeading;
-            lastCompassReads[(compassIter + 1) % (maxCompassInitChecks - 1)] = Input.compass.trueHeading;
-            compassIter += 2;
-        }
-
-        transform.Rotate(new Vector3(0, rotationalSpeed, 0), Space.Self);
     }
 
 /*    public void ShowFlights()

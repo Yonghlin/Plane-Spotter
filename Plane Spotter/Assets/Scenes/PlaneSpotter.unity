@@ -2040,6 +2040,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1703303561323484, guid: d0c460c7e3992194cb7ab7bc605d6985, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 114013540289989012, guid: d0c460c7e3992194cb7ab7bc605d6985,
         type: 3}
       propertyPath: m_Sprite
@@ -2272,6 +2276,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2278066910530459692, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2278066910530459692, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
       propertyPath: m_TagString
       value: Airplane
       objectReference: {fileID: 0}
@@ -2280,6 +2289,16 @@ PrefabInstance:
       propertyPath: gps
       value: 
       objectReference: {fileID: 1354141932}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: distance_multiplier
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: elevation_multiplier
+      value: 0.02
+      objectReference: {fileID: 0}
     - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
       propertyPath: m_RootOrder
@@ -2941,7 +2960,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -80.8912, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3178,7 +3197,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 27.19609, y: 0, z: 17.364899, w: 0}
+  m_margin: {x: 27.19609, y: 0, z: -105.158066, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -4043,13 +4062,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planeBaseObject: {fileID: 2046959642}
   GPS: {fileID: 1354141932}
-  flightSearchOffset: 1
+  flightSearchRadius: 1
+  secondsPerUpdate: 15
   ApiKey: veQykXbTGvP744W5wh6aeOXzBrDj2A5c
   query: 0
-  lat: 0
-  lon: 0
-  otherlat: 0
-  otherlon: 0
 --- !u!1 &1358751495
 GameObject:
   m_ObjectHideFlags: 0
@@ -4306,7 +4322,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toggleMenu: {fileID: 778948417}
-  debugTexts: []
+  debugTexts:
+  - {fileID: 1065221883}
+  - {fileID: 1046548995}
+  - {fileID: 1286286743}
+  - {fileID: 693494042}
+  - {fileID: 1173318910}
+  - {fileID: 703407584}
+  - {fileID: 1435971378}
+  - {fileID: 1358751497}
   getUserSettings: {fileID: 401643779}
 --- !u!114 &1368874966
 MonoBehaviour:
@@ -4426,7 +4450,7 @@ PrefabInstance:
     - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: distance_multiplier
-      value: 10
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
