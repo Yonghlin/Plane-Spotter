@@ -7,15 +7,27 @@ public class CompassManager : MonoBehaviour
 {
     public TMP_Text yaw;
     public TMP_Text comp;
+    public TMP_Text compAvg;
+
+    [Range(10, 60)]
+    public int maxCompassInitChecks;
+
+    private int compassIter = 0;
+    private float[] lastCompassReads;
+    private float lastAvg = 0;
+
+    public float GetCompassAverage()
+    {
+        return lastAvg;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        //transform.rotation = Quaternion.Euler(0, -Input.compass.trueHeading, 0);
         Input.gyro.enabled = true;
         Input.compass.enabled = true;
 
-        //transform.Rotate(-attitude.x, -attitude.y, -attitude.z, Space.Self);
+        lastCompassReads = new float[maxCompassInitChecks];
     }
 
     // Update is called once per frame
@@ -23,9 +35,17 @@ public class CompassManager : MonoBehaviour
     {
         yaw.text = "Cam Rot (Yaw): " + Input.gyro.attitude.eulerAngles.x.ToString();
         comp.text = "Compass: " + Input.compass.magneticHeading.ToString(); 
-        //comp.text = "accel: " + Input.acceleration.z;
 
-        //Debug.Log("Is Gyro Enabled: " + Input.gyro.enabled);
-        //Debug.Log("Input Gyro: " + Input.gyro.attitude);
+        // Update the compass readings list
+        float heading = Input.compass.magneticHeading;
+        lastCompassReads[compassIter % maxCompassInitChecks] = Input.compass.magneticHeading;
+        compassIter += 1;
+        if (compassIter >= int.MaxValue) { compassIter = 0; }
+
+        // Get the average compass reading
+        float sum = 0;
+        for (int i = 0; i < lastCompassReads.Length; i++) { sum += lastCompassReads[i]; }
+        lastAvg = sum / lastCompassReads.Length;
+        compAvg.text = "Comp Avg: " + lastAvg.ToString();
     }
 }
