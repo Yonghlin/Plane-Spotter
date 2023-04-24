@@ -96,34 +96,7 @@ public class Airport : MonoBehaviour
         yield return new WaitForSeconds(waitTimeBeforeInstantiation);
         // any code here to be run AFTER other GameObject's start functions have run
         // without waiting a number of seconds, the objects won't display
-        /*float camYaw = Input.gyro.attitude.eulerAngles.x;
-
-        if(camYaw >= 180f)
-        {
-            //ex: 182 = 182 - 360 = -178
-            camYaw -= 360;
-        }*/
-        //transform.RotateAround(gps.transform.position, Vector3.up, -camYaw);
-        //transform.RotateAround(gps.transform.position, Vector3.up, -Input.compass.trueHeading);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        // rotate the cubes for aesthetics
-        transform.Rotate(new Vector3(0, rotationalSpeed, 0), Space.Self);
-
-        // reset object position before rotating it around the camera
         SetPosition();
-        // object position in the real world is affected by the direction of
-        // the camera, specifically when the app opens. so offset it here
-        // store multiple values of recent compass data to average them and spawn airports
-        // more accurately
-        // wraps back around to the beginning of the array, updating old values with new ones
-        // merge trueHeading with magneticHeading to (hopefully) improve accuracy
-        lastCompassReads[compassIter     % maxCompassInitChecks] = Input.compass.magneticHeading;
-        //lastCompassReads[(compassIter + 1) % (maxCompassInitChecks - 1)] = Input.compass.trueHeading;
-        compassIter += 2;
 
         float sum = 0;
         for (int i = 0; i < lastCompassReads.Length; i++)
@@ -133,7 +106,32 @@ public class Airport : MonoBehaviour
         float avg = sum / lastCompassReads.Length;
 
         // use the average of multiple compass readings to improve accuracy
+        // multiply by a constant, as the objects rotate more than they should
         transform.RotateAround(gps.transform.position, Vector3.up, -avg);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // rotate the cubes for aesthetics
+        transform.Rotate(new Vector3(0, rotationalSpeed, 0), Space.Self);
+
+        // object position in the real world is affected by the direction of
+        // the camera, specifically when the app opens. so offset it here
+        // store multiple values of recent compass data to average them and spawn airports
+        // more accurately
+        // wraps back around to the beginning of the array, updating old values with new ones
+        // merge trueHeading with magneticHeading to (hopefully) improve accuracy
+        float heading = Input.compass.magneticHeading;
+        // averages between 360 and 0 will rotate the objects 180deg. cancel those here.
+        //if (heading < 340 && heading > 20)
+        //lastCompassReads[(compassIter + 1) % (maxCompassInitChecks - 1)] = Input.compass.trueHeading;
+        lastCompassReads[compassIter % maxCompassInitChecks] = Input.compass.magneticHeading;
+        compassIter += 1;
+        /*if (compassIter >= int.MaxValue)
+        {
+            compassIter = 0;
+        }*/
     }
 
 /*    public void ShowFlights()
