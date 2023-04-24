@@ -2299,6 +2299,16 @@ PrefabInstance:
       propertyPath: elevation_multiplier
       value: 0.02
       objectReference: {fileID: 0}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: maxCompassInitChecks
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: waitTimeBeforeInstantiation
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
       propertyPath: m_RootOrder
