@@ -62,10 +62,26 @@ public class Airplane : MonoBehaviour
                                    .GetComponent<CompassManager>();
     }
 
+    public void UpdatePosition(float ElevationNew, float LatitudeNew, float LongitudeNew)
+    {
+        pos2_elevation = Elevation;
+        pos2_latitude = Latitude;
+        pos2_longitude = Longitude;
+
+        Elevation = ElevationNew;
+        Latitude = LatitudeNew;
+        Longitude = LongitudeNew;
+        transform.LookAt(new Vector3((float)pos2_latitude, (float)pos2_elevation, (float)pos2_longitude), Vector3.up);
+        transform.Rotate(180.0f, 0, 0, Space.Self);
+        SetPosition();
+    }
+
     // Update is called once per frame
     void Update()
     {
         if ((((float)(DateTime.Now.Ticks) / TimeSpan.TicksPerMillisecond)) - timeStart >= timeToWaitVelocity) {
+            // update api
+
             pos2_longitude = Longitude;
             pos2_latitude = Latitude;
             pos2_elevation = Elevation;

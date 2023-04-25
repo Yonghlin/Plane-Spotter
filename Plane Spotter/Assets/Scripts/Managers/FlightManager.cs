@@ -73,6 +73,8 @@ public class FlightManager : MonoBehaviour
 
     private string httpResult;
 
+    public List<Airplane> airplanes = new List<Airplane>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -94,11 +96,11 @@ public class FlightManager : MonoBehaviour
 
             // every time we update the plane positions, we recreate the game objects
             // so we only need to do 1 API call
-            var airplanesInScene = GameObject.FindGameObjectsWithTag("Airplane");
-            foreach (GameObject airplane in airplanesInScene)
+            // var airplanesInScene = GameObject.FindGameObjectsWithTag("Airplane");
+            /*foreach (GameObject airplane in airplanesInScene)
             {
                 Destroy(airplane);
-            }
+            }*/
             // respawn the planes with updated positions
             StartCoroutine(GetFlightsFromFA());
         }
@@ -138,8 +140,48 @@ public class FlightManager : MonoBehaviour
                 RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(text);
                 Debug.Log("num planes: " + rootObject.flights.Count);
                 flights = rootObject.flights;
+
+
+                List<Airplane> planesToRemove = new List<Airplane>();
+                foreach (Airplane a in airplanes)
+                {
+                    bool wasInNew = false;
+                    List<Flight> toRemove = new List<Flight>();
+
+                    foreach (Flight newFlight in flights)
+                    {
+                        if (a.Code == newFlight.origin.code)
+                        {
+                            a.UpdatePosition(newFlight.last_position.altitude, (float)newFlight.last_position.latitude, (float)newFlight.last_position.longitude);
+                            wasInNew = true;
+                            // "flights" is the list of NEW planes. if the plane already exists in our old planes, there's no need
+                            // to keep it in the "flights" list, as there is no need to spawn it again, and everything in "flights"
+                            // will be spawned after this.
+                            //
+                            // flights.Remove(newFlight);
+                            toRemove.Add(newFlight);
+                        }
+                    }
+
+                    foreach (Flight f in toRemove)
+                    {
+                        flights.Remove(f);
+                    }
+
+                    if (!wasInNew)
+                    {
+                        // remove from the scene and the list since it's not in the updated data
+                        planesToRemove.Add(a);
+                        Destroy(a.transform.gameObject);
+                    }
+                }
+
+                foreach (Airplane a in planesToRemove)
+                {
+                    airplanes.Remove(a);
+                }
                 SpawnPlanes(flights);
-                
+
                 yield return flights;
             }
         }
@@ -161,6 +203,8 @@ public class FlightManager : MonoBehaviour
 
           
             planeobject.SetActive(true);
+            // for each plane that needs to be spawned, add it to our current list of airplanes
+            airplanes.Add(planeobject.GetComponent<Airplane>());
         }
     }
 }
