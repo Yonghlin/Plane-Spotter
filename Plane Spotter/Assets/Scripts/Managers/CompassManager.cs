@@ -10,6 +10,7 @@ public class CompassManager : MonoBehaviour
     public TMP_Text comp;
     public TMP_Text compAvg;
     public TMP_Text camRotY;
+    public TMP_Text originRotAmount;
 
     public LineRenderer lineCamera;
     public LineRenderer lineOrigin;
@@ -22,6 +23,7 @@ public class CompassManager : MonoBehaviour
     private float[] lastCompassReads;
     private float lastAvg = 0;
     private bool originAnchored = false;
+    private float originRotatedAmount = 0;
 
     public float GetCompassAverage()
     {
@@ -88,6 +90,7 @@ public class CompassManager : MonoBehaviour
         yaw.text = "Gyro (Yaw): " + Input.gyro.attitude.eulerAngles.x.ToString();
         compAvg.text = "Comp Avg: " + lastAvg.ToString();
         camRotY.text = "Cam Rot (Y): " + transform.parent.rotation.y;
+        originRotAmount.text = "Origin Rot Amount: " + originRotatedAmount;
     }
 
     private void AnchorSessionOrigin()
@@ -97,12 +100,13 @@ public class CompassManager : MonoBehaviour
         // It will anchor the "origin camera"
         // to the correct position, which anchors all airports and airplanes to
         // the correct world orientation position.
-        if (!originAnchored && compassIter == maxCompassInitChecks)
+        if (!originAnchored && compassIter > (maxCompassInitChecks * 5))
         {
             // a constant multiplier is applied to correct inaccuracy
             // todo potentially an incorrect fix
-            transform.parent.rotation = Quaternion.Euler(new Vector3(0f, (lastAvg * 1.1f), 0f));
+            transform.parent.rotation = Quaternion.Euler(new Vector3(0f, lastAvg, 0f));
             originAnchored = true;
+            originRotatedAmount = lastAvg;
         }
     }
 
