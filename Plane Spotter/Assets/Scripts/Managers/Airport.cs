@@ -98,8 +98,8 @@ public class Airport : MonoBehaviour
         // the camera, specifically when the app opens. so offset it here
         // store multiple values of recent compass data to average them and spawn airports
         // more accurately
-        float compAvg = compassManager.GetCompassAverage();
-        transform.RotateAround(gps.transform.position, Vector3.up, -compAvg);
+        // float compAvg = compassManager.GetCompassAverage();
+        // transform.RotateAround(gps.transform.position, Vector3.up, -compAvg);
     }
 
 }

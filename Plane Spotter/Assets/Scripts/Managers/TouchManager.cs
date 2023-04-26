@@ -21,16 +21,6 @@ public class TouchManager : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            
-        //if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        //{
-                // Check if the touch is over a UI element
-           /* if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
-            {
-                return;
-            }*/
-
-            //            Ray ray = arCamera.ScreenPointToRay(Input.GetTouch(0).position);
             Ray ray = arCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 

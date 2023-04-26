@@ -10,6 +10,7 @@ public class ToggleDebug : MonoBehaviour
     private bool isVisible = false;
    
     public List<TMP_Text> debugTexts;
+    public List<GameObject> debugObjects;
     public GetUserSettings getUserSettings;
 
     // Start is called before the first frame update
@@ -19,6 +20,10 @@ public class ToggleDebug : MonoBehaviour
         foreach (TMP_Text text in debugTexts)
         {
             text.enabled = false;
+        }
+        foreach (GameObject obj in debugObjects)
+        {
+            obj.SetActive(false);
         }
     }
 
@@ -33,11 +38,19 @@ public class ToggleDebug : MonoBehaviour
             {
                 text.enabled = false;
             }
+            foreach (GameObject obj in debugObjects)
+            {
+                obj.SetActive(false);
+            }
         }
         else{
             foreach (TMP_Text text in debugTexts)
             {
                 text.enabled = true;
+            }
+            foreach (GameObject obj in debugObjects)
+            {
+                obj.SetActive(true);
             }
         }
         isVisible = !isVisible;
