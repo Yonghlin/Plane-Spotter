@@ -86,7 +86,7 @@ public class CompassManager : MonoBehaviour
     private void UpdateDebugMenuInfo()
     {
         // Update debug menu info
-        comp.text = "Compass: " + Input.compass.magneticHeading.ToString();
+        comp.text = "Compass: " + Input.compass.trueHeading.ToString();
         yaw.text = "Gyro (Yaw): " + Input.gyro.attitude.eulerAngles.x.ToString();
         compAvg.text = "Comp Avg: " + lastAvg.ToString();
         camRotY.text = "Cam Rot (Y): " + transform.parent.rotation.y;
@@ -100,7 +100,11 @@ public class CompassManager : MonoBehaviour
         // It will anchor the "origin camera"
         // to the correct position, which anchors all airports and airplanes to
         // the correct world orientation position.
-        if (!originAnchored && compassIter > (maxCompassInitChecks * 5))
+        //
+        // Multiply by 1.5 to wait just a bit longer to ensure the compass
+        // average is more stable. Without this buffer, aggressive/passive
+        // rotation is more likely.
+        if (!originAnchored && compassIter > (maxCompassInitChecks * 1.5))
         {
             // a constant multiplier is applied to correct inaccuracy
             // todo potentially an incorrect fix
@@ -114,7 +118,7 @@ public class CompassManager : MonoBehaviour
     {
         // Update the compass readings list
         float heading = Input.compass.magneticHeading;
-        lastCompassReads[compassIter % maxCompassInitChecks] = Input.compass.magneticHeading;
+        lastCompassReads[compassIter % maxCompassInitChecks] = Input.compass.trueHeading;
         compassIter += 1;
         // If compassIter is too large, reset it
         if (compassIter >= int.MaxValue) { compassIter = 0; }
