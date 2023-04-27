@@ -94,7 +94,7 @@ public class AirportFlights : MonoBehaviour
             request.SetRequestHeader("Content-Type", "application/json");
             request.SetRequestHeader("x-apikey", ApiKey);
             yield return request.SendWebRequest();
-            /*request.SendWebRequest();*/
+
             if (request.isHttpError || request.isNetworkError)
             {
                 Debug.Log(request.error);
@@ -105,7 +105,6 @@ public class AirportFlights : MonoBehaviour
                 var text = request.downloadHandler.text;
                 Debug.Log(text);
 
-                // todo add tmptexts for this?
                 airportFlightData = Newtonsoft.Json.JsonConvert.DeserializeObject<AirportFlightData>(text);
                 foreach(AirportFlightArrival arrival in airportFlightData.arrivals)
                 {

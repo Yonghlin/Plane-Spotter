@@ -94,13 +94,6 @@ public class FlightManager : MonoBehaviour
         {
             lastUpdatedMillis = currentTimeMillis;
 
-            // every time we update the plane positions, we recreate the game objects
-            // so we only need to do 1 API call
-            // var airplanesInScene = GameObject.FindGameObjectsWithTag("Airplane");
-            /*foreach (GameObject airplane in airplanesInScene)
-            {
-                Destroy(airplane);
-            }*/
             // respawn the planes with updated positions
             StartCoroutine(GetFlightsFromFA());
         }
@@ -126,6 +119,7 @@ public class FlightManager : MonoBehaviour
             request.SetRequestHeader("Content-Type", "application/json");
             request.SetRequestHeader("x-apikey", ApiKey);
             yield return request.SendWebRequest();
+
             if (request.isHttpError || request.isNetworkError)
             {
                 Debug.Log(request.error);
@@ -141,7 +135,6 @@ public class FlightManager : MonoBehaviour
                 Debug.Log("num planes: " + rootObject.flights.Count);
                 flights = rootObject.flights;
 
-
                 List<Airplane> planesToRemove = new List<Airplane>();
                 foreach (Airplane a in airplanes)
                 {
@@ -154,17 +147,15 @@ public class FlightManager : MonoBehaviour
                         {
                             a.UpdatePosition(newFlight.last_position.altitude, (float)newFlight.last_position.latitude, (float)newFlight.last_position.longitude);
                             wasInNew = true;
-                            // "flights" is the list of NEW planes. if the plane already exists in our old planes, there's no need
-                            // to keep it in the "flights" list, as there is no need to spawn it again, and everything in "flights"
-                            // will be spawned after this.
-                            //
-                            // flights.Remove(newFlight);
                             toRemove.Add(newFlight);
                         }
                     }
 
                     foreach (Flight f in toRemove)
                     {
+                        // "flights" is the list of NEW planes. if the plane already exists in our old planes, there's no need
+                        // to keep it in the "flights" list, as there is no need to spawn it again, and everything in "flights"
+                        // will be spawned after this.
                         flights.Remove(f);
                     }
 

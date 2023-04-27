@@ -64,28 +64,50 @@ public class Airplane : MonoBehaviour
 
     public void UpdatePosition(float ElevationNew, float LatitudeNew, float LongitudeNew)
     {
-        pos2_elevation = Elevation;
-        pos2_latitude = Latitude;
-        pos2_longitude = Longitude;
+        pos2_elevation = ElevationNew;
+        pos2_latitude = LatitudeNew;
+        pos2_longitude = LongitudeNew;
 
         Elevation = ElevationNew;
         Latitude = LatitudeNew;
         Longitude = LongitudeNew;
-        transform.LookAt(new Vector3((float)pos2_latitude, (float)pos2_elevation, (float)pos2_longitude), Vector3.up);
-        transform.Rotate(180.0f, 0, 0, Space.Self);
+
+        Vector3 pos1 = new Vector3((float) pos1_latitude, (float) pos1_elevation, (float) pos1_longitude);
+        Vector3 pos2 = new Vector3((float) pos2_latitude, (float) pos2_elevation, (float) pos2_longitude);
+        Vector3 dir = (pos2 - pos1) * 10000;
+
+        transform.LookAt(dir);
+        //transform.LookAt(new Vector3((float)pos1_latitude * 10, (float)pos1_elevation, (float)pos1_longitude * 10), Vector3.up);
+/*
+        var LatDiff = LatitudeNew - Latitude;
+        var LonDiff = LongitudeNew - Longitude;
+        var EleDiff = ElevationNew - Elevation;
+        transform.Rotate*/
+
+//        transform.Rotate(0, 180f, 0, Space.Self);
+
+        Debug.Log("------------------------------------------");
+        Debug.Log("LAT\t" + Latitude);
+        Debug.Log("LON\t" + Longitude);
+        Debug.Log("ELE\t" + Elevation);
+        Debug.Log("---------------------");
+        Debug.Log("NEW LAT\t" + LatitudeNew);
+        Debug.Log("NEW LON\t" + LongitudeNew);
+        Debug.Log("NEW ELE\t" + ElevationNew);
+
         SetPosition();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if ((((float)(DateTime.Now.Ticks) / TimeSpan.TicksPerMillisecond)) - timeStart >= timeToWaitVelocity) {
+/*        if ((((float)(DateTime.Now.Ticks) / TimeSpan.TicksPerMillisecond)) - timeStart >= timeToWaitVelocity) {
             // update api
 
             pos2_longitude = Longitude;
             pos2_latitude = Latitude;
             pos2_elevation = Elevation;
-        }
+        }*/
 
         if (!grabbedPos1)
         {
@@ -99,14 +121,7 @@ public class Airplane : MonoBehaviour
         longitudeVelocity = (pos2_longitude - pos1_longitude) / timeWaited;
         latitudeVelocity = (pos2_latitude - pos1_latitude) / timeWaited;
      
-        // reset object position before rotating it around the camera
-        SetPosition();
-        // object position in the real world is affected by the direction of
-        // the camera, specifically when the app opens. so offset it here
-        // store multiple values of recent compass data to average them and spawn airports
-        // more accurately
-        // float compAvg = compassManager.GetCompassAverage();
-        // transform.RotateAround(gps.transform.position, Vector3.up, -compAvg);
+        SetPosition(); // todo possibly unnecessary
     }
 
 }

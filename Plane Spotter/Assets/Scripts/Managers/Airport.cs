@@ -13,9 +13,6 @@ public class Airport : MonoBehaviour
     public double Longitude;
     public double Latitude;
 
-    private TrajectoryLine trajectoryLine;
-    private AirportFlights airportFlights;
-    private CompassManager compassManager;
     private bool showTrajectoryLine = false;
 
     [Range(1,5)]
@@ -77,14 +74,7 @@ public class Airport : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        compassManager = GameObject.FindGameObjectWithTag("CompassCamera")
-                                   .GetComponent<CompassManager>();
-
-        /*trajectoryLine = GameObject.FindObjectOfType<TrajectoryLine>();
-        airportFlights = GetComponent<AirportFlights>();
-        airportFlights.GetAirportFlightsFromFA();*/
     }
-
 
     // Update is called once per frame
     void Update()
@@ -92,14 +82,7 @@ public class Airport : MonoBehaviour
         // rotate the cubes for aesthetics
         transform.Rotate(new Vector3(0, rotationalSpeed, 0), Space.Self);
 
-        // reset object position before rotating it around the camera
-        SetPosition();
-        // object position in the real world is affected by the direction of
-        // the camera, specifically when the app opens. so offset it here
-        // store multiple values of recent compass data to average them and spawn airports
-        // more accurately
-        // float compAvg = compassManager.GetCompassAverage();
-        // transform.RotateAround(gps.transform.position, Vector3.up, -compAvg);
+        SetPosition(); // todo possibly unnecessary
     }
 
 }
