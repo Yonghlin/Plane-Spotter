@@ -21,6 +21,7 @@ public class CompassManager : MonoBehaviour
 
     private int compassIter = 0;
     private float[] lastCompassReads;
+    private float lastRaw = 0;
     private float lastAvg = 0;
     private bool originAnchored = false;
     private float originRotatedAmount = 0;
@@ -33,8 +34,11 @@ public class CompassManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Enable compass
         Input.gyro.enabled = true;
         Input.compass.enabled = true;
+
+        // Initialize
         lastCompassReads = new float[maxCompassInitChecks];
         InitDebugLines();
     }
@@ -85,10 +89,9 @@ public class CompassManager : MonoBehaviour
 
     private void UpdateDebugMenuInfo()
     {
-        // Update debug menu info
-        comp.text = "Compass: " + Input.compass.trueHeading.ToString();
-        yaw.text = "Gyro (Yaw): " + Input.gyro.attitude.eulerAngles.x.ToString();
-        compAvg.text = "Comp Avg: " + lastAvg.ToString();
+        comp.text = "Compass: " + lastRaw;
+        yaw.text = "Gyro (Yaw): " + Input.gyro.attitude.eulerAngles.x;
+        compAvg.text = "Comp Avg: " + lastAvg;
         camRotY.text = "Cam Rot (Y): " + transform.parent.rotation.y;
         originRotAmount.text = "Origin Rot Amount: " + originRotatedAmount;
     }
@@ -99,26 +102,23 @@ public class CompassManager : MonoBehaviour
         // camera successfully. Call it once after the averages come in.
         // It will anchor the "origin camera"
         // to the correct position, which anchors all airports and airplanes to
-        // the correct world orientation position.
+        // the correct world orientation position. Only do this once.
         //
-        // Multiply by 1.5 to wait just a bit longer to ensure the compass
-        // average is more stable. Without this buffer, aggressive/passive
-        // rotation is more likely.
-        if (!originAnchored && compassIter > (maxCompassInitChecks * 1.5))
+        // The compass may need a small amount of time to initialize. Wait until
+        // the last compass reading is not the default value.
+        if (!originAnchored && lastRaw != 0)
         {
-            // a constant multiplier is applied to correct inaccuracy
-            // todo potentially an incorrect fix
-            transform.parent.rotation = Quaternion.Euler(new Vector3(0f, lastAvg, 0f));
+            transform.parent.rotation = Quaternion.Euler(new Vector3(0f, lastRaw, 0f));
             originAnchored = true;
-            originRotatedAmount = lastAvg;
+            originRotatedAmount = lastRaw;
         }
     }
 
     private void UpdateCompassList()
     {
         // Update the compass readings list
-        float heading = Input.compass.magneticHeading;
-        lastCompassReads[compassIter % maxCompassInitChecks] = Input.compass.trueHeading;
+        lastRaw = Input.compass.trueHeading;
+        lastCompassReads[compassIter % maxCompassInitChecks] = lastRaw;
         compassIter += 1;
         // If compassIter is too large, reset it
         if (compassIter >= int.MaxValue) { compassIter = 0; }
