@@ -47,7 +47,7 @@ public class Airplane : MonoBehaviour
         // convert latitude/longitude to x/y coordinates
         Vector3 unityCoords = new Vector3(
                    distance_multiplier * (float)(Latitude - gps.getLatitude()),
-                   elevation_multiplier * (float)Elevation,
+                   elevation_multiplier * (float)(Elevation - gps.getAltitude()),
                    distance_multiplier * (float)(Longitude - gps.getLongitude()));
         // get the position binding script
         PositionBindManager posManager = this.GetComponent<PositionBindManager>();

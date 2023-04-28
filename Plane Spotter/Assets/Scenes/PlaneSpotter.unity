@@ -1079,7 +1079,7 @@ Transform:
   m_GameObject: {fileID: 366926730}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1418156260}
@@ -2473,7 +2473,7 @@ PrefabInstance:
     - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
       propertyPath: elevation_multiplier
-      value: 0.02
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
@@ -2489,6 +2489,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
@@ -4014,6 +4029,12 @@ RectTransform:
   m_AnchoredPosition: {x: -142, y: -75}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1352745760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3042858975812256719, guid: 33183224f759b824e8726d08dfea8339,
+    type: 3}
+  m_PrefabInstance: {fileID: 1418156257}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1354141925
 GameObject:
   m_ObjectHideFlags: 0
@@ -4184,16 +4205,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a12c90f87305f54c9ab88e9c65562b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrow: {fileID: 0}
-  Gps: {fileID: 1354141932}
-  cacheManager: {fileID: 339997851}
+  arrow: {fileID: 1352745760}
   AirportBaseObject: {fileID: 1418156258}
+  gps: {fileID: 1354141932}
   ApiKey: veQykXbTGvP744W5wh6aeOXzBrDj2A5c
   Radius: 50
+  cacheManager: {fileID: 339997851}
   dataMethod: {fileID: 1358751497}
-  lat: 40.0506496
-  lon: -77.5275351
-  altitude: 50
 --- !u!114 &1354141934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4254,8 +4272,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   planeBaseObject: {fileID: 2046959642}
-  GPS: {fileID: 1354141932}
-  flightSearchRadius: 1
+  gps: {fileID: 1354141932}
+  flightSearchRadius: 0.5
   secondsPerUpdate: 15
   ApiKey: veQykXbTGvP744W5wh6aeOXzBrDj2A5c
   airplanes: []
@@ -4720,17 +4738,17 @@ PrefabInstance:
     - target: {fileID: 2409910347987573109, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 30
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2409910347987573109, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 30
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2409910347987573109, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2409910347987573109, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
@@ -4775,7 +4793,7 @@ PrefabInstance:
     - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: elevation_multiplier
-      value: 0.02
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
@@ -4795,17 +4813,17 @@ PrefabInstance:
     - target: {fileID: 3807611698012390438, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3807611698012390438, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3807611698012390438, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3807611698012390438, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}

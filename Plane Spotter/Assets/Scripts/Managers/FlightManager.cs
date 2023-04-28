@@ -63,9 +63,9 @@ public class FlightManager : MonoBehaviour
 
     public GameObject planeBaseObject;
 
-    public GPS GPS;
+    public GPS gps;
 
-    public int flightSearchRadius;
+    public float flightSearchRadius;
     public int secondsPerUpdate;
     private long lastUpdatedMillis;
 
@@ -105,10 +105,10 @@ public class FlightManager : MonoBehaviour
 
     IEnumerator GetFlightsFromFA()
     {
-        double minLat = /*GPS.getLatitude();//*/40.0506496 - flightSearchRadius;
-        double minLon = /*GPS.getLongitude(); //*/-77.5275351 - flightSearchRadius;
-        double maxLat = /*GPS.getLatitude();//*/40.0506496 + flightSearchRadius;
-        double maxLon = /*GPS.getLongitude(); //*/-77.5275351 + flightSearchRadius;
+        double minLat = gps.getLatitude() - flightSearchRadius;
+        double minLon = gps.getLongitude() - flightSearchRadius;
+        double maxLat = gps.getLatitude() + flightSearchRadius;
+        double maxLon = gps.getLongitude() + flightSearchRadius;
         using (UnityWebRequest request = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/flights/search?" +
                     "query=-latlong+%22" +
                     minLat.ToString() + "+" +
