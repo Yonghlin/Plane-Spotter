@@ -191,6 +191,8 @@ public class FlightManager : MonoBehaviour
             ap.Name = plane.origin.name;
             ap.Code = plane.origin.code;
             ap.PlaneId = plane.ident;
+            ap.DestinationName = plane.destination.name;
+            ap.DestinationCity = plane.destination.city; 
 
           
             planeobject.SetActive(true);

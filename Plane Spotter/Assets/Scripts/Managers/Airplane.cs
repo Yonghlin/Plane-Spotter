@@ -13,6 +13,8 @@ public class Airplane : MonoBehaviour
     public double Elevation;
     public double Longitude;
     public double Latitude;
+    public String DestinationName;
+    public String DestinationCity;
 
     // GPS
     [Range(1, 5)]

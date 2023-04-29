@@ -72,6 +72,7 @@ public class Airport : MonoBehaviour
             (float) gps.getLatitude()
         );
         posManager.SetBoundPosAndScale(this.gameObject, posNew);
+
     }
 
     // Update is called once per frame

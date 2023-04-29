@@ -6,6 +6,7 @@ using TMPro;
 
 public class PopUpManager : MonoBehaviour
 {
+    //Labels for Airport Popup
     public GameObject airportPopup;
     public TMP_Text airportName;
     public TMP_Text airportCode;
@@ -14,12 +15,22 @@ public class PopUpManager : MonoBehaviour
     public TMP_Text airportLatitude;
     public Toggle showTrajectoryLines;
 
-    bool airportPopUpVisible = false;
-    //bool airplanePopUpVisible = false;
+
+    //Labels for Airplane Popup
+    public GameObject airplanePopup;
+    public TMP_Text airplaneName;
+    public TMP_Text airplaneCode;
+    public TMP_Text airplaneElevation;
+    public TMP_Text airplaneLongitude;
+    public TMP_Text airlaneLatitude;
+    public TMP_Text destinationCity;
+    public TMP_Text destinationName;
+    
 
     private void Start()
     {
         airportPopup.SetActive(false);
+        airplanePopup.SetActive(false);
     }
 
     public void enableAirportPopup(GameObject airport)
@@ -37,6 +48,24 @@ public class PopUpManager : MonoBehaviour
     public void disableAirportPopup()
     {
         airportPopup.SetActive(false);
+    }
+
+    public void enableAirplanePopup(GameObject airplane)
+    {
+        airplaneName.text = airplane.GetComponent<Airplane>().name;
+        airplaneCode.text = airplane.GetComponent<Airplane>().Code;
+        airplaneElevation.text = airplane.GetComponent<Airplane>().Elevation.ToString();
+        airplaneLongitude.text = airplane.GetComponent<Airplane>().Longitude.ToString();
+        airlaneLatitude.text = airplane.GetComponent<Airplane>().Latitude.ToString();
+        destinationCity.text  = airplane.GetComponent<Airplane>().DestinationCity;
+        destinationName.text = airplane.GetComponent<Airplane>().DestinationName;
+
+        airplanePopup.SetActive(true);
+    }
+
+    public void disableAirplanePopup()
+    {
+        airplanePopup.SetActive(false);
     }
 
 }
