@@ -77,7 +77,6 @@ public class PositionBindManager : MonoBehaviour
         scale.y = (objectScale.y * bindDistancePercentLength);
         scale.z = (objectScale.z * bindDistancePercentLength);
 
-
         return scale;
     }
 
