@@ -37,7 +37,7 @@ public class Airplane : MonoBehaviour
     private float timeStart;
 
     public GPS gps;
-    public DataConverter converter;
+    public GeoConverter converter;
     public float distance_multiplier;
     public float elevation_multiplier;
 
@@ -45,24 +45,15 @@ public class Airplane : MonoBehaviour
 
     private void SetPosition()
     {
-        Vector3 loc1 = converter.GeoToCartesian(
+        PositionBindManager posManager = this.GetComponent<PositionBindManager>();
+        Vector3 posNew = posManager.GetRawPosition(
             (float) Longitude,
             (float) Elevation,
-            (float) Latitude);
-        Vector3 loc2 = converter.GeoToCartesian(
+            (float) Latitude,
             (float) gps.getLongitude(),
             (float) gps.getAltitude(),
-            (float) gps.getLatitude());
-        Vector3 posNew = loc2 - loc1;
-
-        // Since values are given in feet, they are massive, and the objects
-        // will be too tiny to see after their distance and scale is bound.
-        // Scale them down here.
-        posNew.x *= 0.001f;
-        posNew.y *= 0.001f;
-        posNew.z *= 0.001f;
-
-        PositionBindManager posManager = this.GetComponent<PositionBindManager>();
+            (float) gps.getLatitude()
+        );
         posManager.SetBoundPosAndScale(this.gameObject, posNew);
     }
 

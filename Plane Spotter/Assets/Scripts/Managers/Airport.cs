@@ -21,7 +21,7 @@ public class Airport : MonoBehaviour
     public float rotationalSpeed;
 
     public GPS gps;
-    public DataConverter converter;
+    public GeoConverter converter;
     public float distance_multiplier;
     public float elevation_multiplier;
 
@@ -62,38 +62,16 @@ public class Airport : MonoBehaviour
 
     private void SetPosition()
     {
-        Vector3 loc1 = converter.GeoToCartesian(
+        PositionBindManager posManager = this.GetComponent<PositionBindManager>();
+        Vector3 posNew = posManager.GetRawPosition(
             (float) Longitude,
             (float) Elevation,
-            (float) Latitude);
-        Vector3 loc2 = converter.GeoToCartesian(
+            (float) Latitude,
             (float) gps.getLongitude(),
             (float) gps.getAltitude(),
-            (float) gps.getLatitude());
-        Vector3 posNew = loc2 - loc1;
-
-        // Since values are given in feet, they are massive, and the objects
-        // will be too tiny to see after their distance and scale is bound.
-        // Scale them down here.
-        posNew.x *= 0.001f;
-        posNew.y *= 0.001f;
-        posNew.z *= 0.001f;
-
-        PositionBindManager posManager = this.GetComponent<PositionBindManager>();
+            (float) gps.getLatitude()
+        );
         posManager.SetBoundPosAndScale(this.gameObject, posNew);
-/*
-        Vector3 posNew = converter.ConvertToCartesian(
-            distance_multiplier * (float)(Latitude - gps.getLatitude()),
-            elevation_multiplier * (float)(Elevation - gps.getAltitude()),
-            distance_multiplier * (float)(Longitude - gps.getLongitude()));
-        
-        PositionBindManager posManager = this.GetComponent<PositionBindManager>();
-        posManager.SetBoundPosAndScale(this.gameObject, posNew);*/
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
     }
 
     // Update is called once per frame

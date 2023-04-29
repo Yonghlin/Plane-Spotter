@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataConverter : MonoBehaviour
+public class GeoConverter : MonoBehaviour
 {
     public float DegToRad(float deg)
     {
