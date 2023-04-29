@@ -54,17 +54,6 @@ public class AirportFlights : MonoBehaviour
     [Range(0, 2)]
     public int daysFromNowToGrabAirportFlights;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     int GetNumAirportFlights()
     {
         return airportFlightData.arrivals.Count;

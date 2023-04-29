@@ -2467,8 +2467,13 @@ PrefabInstance:
       objectReference: {fileID: 1354141932}
     - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
+      propertyPath: converter
+      value: 
+      objectReference: {fileID: 2046959649}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
       propertyPath: distance_multiplier
-      value: 1000
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
@@ -4772,6 +4777,11 @@ PrefabInstance:
       objectReference: {fileID: 1354141932}
     - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
+      propertyPath: converter
+      value: 
+      objectReference: {fileID: 1418156271}
+    - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
+        type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -4788,7 +4798,7 @@ PrefabInstance:
     - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
       propertyPath: distance_multiplier
-      value: 1000
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3214750088160365535, guid: 33183224f759b824e8726d08dfea8339,
         type: 3}
@@ -4960,6 +4970,18 @@ MonoBehaviour:
   ApiKey: veQykXbTGvP744W5wh6aeOXzBrDj2A5c
   daysUntilNowToGrabAirportFlights: 4
   daysFromNowToGrabAirportFlights: 1
+--- !u!114 &1418156271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1418156258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5773bc8cb705a4fa26cb82e858bddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1435971376
 GameObject:
   m_ObjectHideFlags: 0
@@ -6011,6 +6033,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bindDistance: 200
   cameraObject: {fileID: 1354141925}
+--- !u!114 &2046959649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2046959642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5773bc8cb705a4fa26cb82e858bddb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2065384470
 GameObject:
   m_ObjectHideFlags: 0

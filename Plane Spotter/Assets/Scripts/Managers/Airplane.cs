@@ -37,6 +37,7 @@ public class Airplane : MonoBehaviour
     private float timeStart;
 
     public GPS gps;
+    public DataConverter converter;
     public float distance_multiplier;
     public float elevation_multiplier;
 
@@ -44,14 +45,25 @@ public class Airplane : MonoBehaviour
 
     private void SetPosition()
     {
-        // convert latitude/longitude to x/y coordinates
-        Vector3 unityCoords = new Vector3(
-                   distance_multiplier * (float)(Latitude - gps.getLatitude()),
-                   elevation_multiplier * (float)(Elevation - gps.getAltitude()),
-                   distance_multiplier * (float)(Longitude - gps.getLongitude()));
-        // get the position binding script
+        Vector3 loc1 = converter.GeoToCartesian(
+            (float) Longitude,
+            (float) Elevation,
+            (float) Latitude);
+        Vector3 loc2 = converter.GeoToCartesian(
+            (float) gps.getLongitude(),
+            (float) gps.getAltitude(),
+            (float) gps.getLatitude());
+        Vector3 posNew = loc2 - loc1;
+
+        // Since values are given in feet, they are massive, and the objects
+        // will be too tiny to see after their distance and scale is bound.
+        // Scale them down here.
+        posNew.x *= 0.001f;
+        posNew.y *= 0.001f;
+        posNew.z *= 0.001f;
+
         PositionBindManager posManager = this.GetComponent<PositionBindManager>();
-        posManager.SetBoundPosAndScale(this.gameObject, unityCoords);
+        posManager.SetBoundPosAndScale(this.gameObject, posNew);
     }
 
     // Start is called before the first frame update
@@ -72,28 +84,12 @@ public class Airplane : MonoBehaviour
         Latitude = LatitudeNew;
         Longitude = LongitudeNew;
 
-        Vector3 pos1 = new Vector3((float) pos1_latitude, (float) pos1_elevation, (float) pos1_longitude);
-        Vector3 pos2 = new Vector3((float) pos2_latitude, (float) pos2_elevation, (float) pos2_longitude);
-        Vector3 dir = (pos2 - pos1) * 10000;
+        Vector3 pos1 = converter.GeoToCartesian((float) pos1_longitude, (float) pos1_elevation, (float) pos1_latitude);
+        Vector3 pos2 = converter.GeoToCartesian((float) pos2_longitude, (float) pos2_elevation, (float) pos2_latitude);
+        Vector3 dir = (pos2 - pos1);
 
         transform.LookAt(dir);
-        //transform.LookAt(new Vector3((float)pos1_latitude * 10, (float)pos1_elevation, (float)pos1_longitude * 10), Vector3.up);
-/*
-        var LatDiff = LatitudeNew - Latitude;
-        var LonDiff = LongitudeNew - Longitude;
-        var EleDiff = ElevationNew - Elevation;
-        transform.Rotate*/
-
-//        transform.Rotate(0, 180f, 0, Space.Self);
-
-        Debug.Log("------------------------------------------");
-        Debug.Log("LAT\t" + Latitude);
-        Debug.Log("LON\t" + Longitude);
-        Debug.Log("ELE\t" + Elevation);
-        Debug.Log("---------------------");
-        Debug.Log("NEW LAT\t" + LatitudeNew);
-        Debug.Log("NEW LON\t" + LongitudeNew);
-        Debug.Log("NEW ELE\t" + ElevationNew);
+        transform.Rotate(0, 180, 0, Space.Self);
 
         SetPosition();
     }
@@ -101,14 +97,6 @@ public class Airplane : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-/*        if ((((float)(DateTime.Now.Ticks) / TimeSpan.TicksPerMillisecond)) - timeStart >= timeToWaitVelocity) {
-            // update api
-
-            pos2_longitude = Longitude;
-            pos2_latitude = Latitude;
-            pos2_elevation = Elevation;
-        }*/
-
         if (!grabbedPos1)
         {
             pos1_latitude = Latitude;
