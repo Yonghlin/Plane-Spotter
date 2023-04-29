@@ -71,6 +71,7 @@ public class Airport : MonoBehaviour
             (float) gps.getAltitude(),
             (float) gps.getLatitude()
         );
+        posNew = posManager.NormalizePosition(posNew);
         posManager.SetBoundPosAndScale(this.gameObject, posNew);
     }
 

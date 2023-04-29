@@ -4060,6 +4060,7 @@ GameObject:
   - component: {fileID: 1354141935}
   - component: {fileID: 1354141936}
   - component: {fileID: 1354141937}
+  - component: {fileID: 1354141938}
   m_Layer: 0
   m_Name: AR Camera
   m_TagString: CompassCamera
@@ -4279,10 +4280,23 @@ MonoBehaviour:
   planeBaseObject: {fileID: 2046959642}
   gps: {fileID: 1354141932}
   flightSearchRadius: 0.5
-  secondsPerUpdate: 15
+  secondsPerUpdate: 30
   ApiKey: veQykXbTGvP744W5wh6aeOXzBrDj2A5c
-  airplanes: []
-  query: 0
+--- !u!114 &1354141938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354141925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce76967d870db3941b775ca80f829c31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ApiKey: veQykXbTGvP744W5wh6aeOXzBrDj2A5c
+  positionList:
+    positions: []
 --- !u!1 &1358751495
 GameObject:
   m_ObjectHideFlags: 0

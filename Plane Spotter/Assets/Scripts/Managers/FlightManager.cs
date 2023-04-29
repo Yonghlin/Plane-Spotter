@@ -91,45 +91,13 @@ public class FlightManager : MonoBehaviour
         }
     }
 
-    private void UpdateCurrentPlaneList()
+    private void ClearExistingPlanes()
     {
-        List<Airplane> planesToRemove = new List<Airplane>();
-        foreach (Airplane a in airplanesInScene)
+        GameObject[] planes = GameObject.FindGameObjectsWithTag("Airplane");
+        foreach (GameObject plane in planes)
         {
-            bool wasInNew = false;
-            List<Flight> toRemove = new List<Flight>();
-
-            foreach (Flight newFlight in airplanesFromAPI)
-            {
-                if (a.Code == newFlight.origin.code)
-                {
-                    a.UpdatePosition(newFlight.last_position.altitude, (float)newFlight.last_position.latitude, (float)newFlight.last_position.longitude);
-                    wasInNew = true;
-                    toRemove.Add(newFlight);
-                }
-            }
-
-            foreach (Flight f in toRemove)
-            {
-                // "flights" is the list of NEW planes. if the plane already exists in our old planes, there's no need
-                // to keep it in the "flights" list, as there is no need to spawn it again, and everything in "flights"
-                // will be spawned after this.
-                airplanesFromAPI.Remove(f);
-            }
-
-            if (!wasInNew)
-            {
-                // remove from the scene and the list since it's not in the updated data
-                planesToRemove.Add(a);
-                Destroy(a.transform.gameObject);
-            }
+            Destroy(plane);
         }
-
-        foreach (Airplane a in planesToRemove)
-        {
-            airplanesInScene.Remove(a);
-        }
-
     }
 
     IEnumerator GetFlightsFromFA()
@@ -164,7 +132,7 @@ public class FlightManager : MonoBehaviour
                 Debug.Log("num planes: " + rootObject.flights.Count);
                 airplanesFromAPI = rootObject.flights;
 
-                UpdateCurrentPlaneList();
+                ClearExistingPlanes();
                 SpawnPlanes(airplanesFromAPI);
 
                 yield return airplanesFromAPI;
@@ -178,6 +146,7 @@ public class FlightManager : MonoBehaviour
         {
             Debug.Log("Spawning plane: " + plane.ident);
             GameObject planeobject = Instantiate(planeBaseObject);
+
             Airplane ap = planeobject.GetComponent<Airplane>();
             ap.Elevation = plane.last_position.altitude;
             ap.Latitude = plane.last_position.latitude;
@@ -185,6 +154,11 @@ public class FlightManager : MonoBehaviour
             ap.Name = plane.origin.name;
             ap.Code = plane.origin.code;
             ap.PlaneId = plane.ident;
+            ap.Heading = plane.last_position.heading;
+            ap.GroundSpeed = plane.last_position.groundspeed;
+
+            ap.UpdateLastUpdateTime();
+            planeobject.transform.rotation = Quaternion.Euler(0, 180 + plane.last_position.heading, 0);
             planeobject.SetActive(true);
 
             // for each plane that needs to be spawned, add it to our current list of airplanes

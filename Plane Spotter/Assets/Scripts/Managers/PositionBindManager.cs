@@ -19,7 +19,11 @@ public class PositionBindManager : MonoBehaviour
         Vector3 loc1 = converter.GeoToCartesian(longitude1, altitude1, latitude1);
         Vector3 loc2 = converter.GeoToCartesian(longitude2, altitude2, latitude2);
         Vector3 posNew = loc2 - loc1;
+        return posNew;
+    }
 
+    public Vector3 NormalizePosition(Vector3 posNew)
+    {
         // Since values are given in feet, they are massive, and the objects
         // will be too tiny to see after their distance and scale is bound.
         // Scale them down here.
