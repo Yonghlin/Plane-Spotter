@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using gps = GPS;
 
@@ -22,6 +23,7 @@ public class Airplane : MonoBehaviour
     public GeoConverter converter;
     public float distance_multiplier;
     public float elevation_multiplier;
+    public TogglePlaneLines togglePlaneLines;
 
     long lastUpdateTime;
 
@@ -72,7 +74,13 @@ public class Airplane : MonoBehaviour
         Latitude = LatitudeNew;
     }
 
-    private void Start()
+    private void UpdateLineToggle()
+    {
+        lineFront.enabled = togglePlaneLines.DisplayingLines();
+        lineBack.enabled = togglePlaneLines.DisplayingLines();
+    }
+
+    private void InitLines()
     {
         // Initialize lines
         LineRenderer[] lines = { lineFront, lineBack };
@@ -96,12 +104,21 @@ public class Airplane : MonoBehaviour
         lineBack.SetPosition(0, Vector3.zero);
         lineBack.SetPosition(1, Vector3.back * 1000f);
 
+        // Start disabled
+        lineFront.enabled = false;
+        lineFront.enabled = false;
+    }
+
+    void Start()
+    {
+        InitLines();
     }
 
     // Update is called once per frame
     void Update()
     {
         SetPosition();
+        UpdateLineToggle();
     }
 
 }

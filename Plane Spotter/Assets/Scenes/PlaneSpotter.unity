@@ -2613,6 +2613,11 @@ PrefabInstance:
       objectReference: {fileID: 88764736}
     - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
+      propertyPath: togglePlaneLines
+      value: 
+      objectReference: {fileID: 2046959652}
+    - target: {fileID: 3506680619465026701, guid: 95decd6133b163b4dad9441b1ca866b0,
+        type: 3}
       propertyPath: distance_multiplier
       value: 1
       objectReference: {fileID: 0}
@@ -6458,6 +6463,19 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 733462596}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2046959652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2046959642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eff0baa3e8fd1ec4a828a98654ec76b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonShowLines: {fileID: 1114235365}
 --- !u!1 &2065384470
 GameObject:
   m_ObjectHideFlags: 0
