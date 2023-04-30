@@ -8,7 +8,7 @@ public class PositionBindManager : MonoBehaviour
     public int bindDistance;
     public GameObject cameraObject;
     public GeoConverter converter;
-    public int maxScale;
+    public float maxScale;
 
     // attached to the game object using this script. Store its initial scale here
     private Vector3 objectScale;
@@ -81,13 +81,13 @@ public class PositionBindManager : MonoBehaviour
         return ClampScale(obj, scale);
     }
 
-    private float GetClampMultiplier(int clampMax, Vector3 scale)
+    private float GetClampMultiplier(Vector3 scale)
     {
         // Get percentages. If scale is larger than clampMax,
         // percent will be less than 1.
-        float percentX = clampMax / scale.x;
-        float percentY = clampMax / scale.y;
-        float percentZ = clampMax / scale.z;
+        float percentX = maxScale / scale.x;
+        float percentY = maxScale / scale.y;
+        float percentZ = maxScale / scale.z;
         
         // Only if percent is less than 1, clamp.
         float smallest = Mathf.Min(percentX, percentY, percentZ);
@@ -97,7 +97,7 @@ public class PositionBindManager : MonoBehaviour
 
     private Vector3 ClampScale(GameObject obj, Vector3 scale)
     {
-        float multiplier = GetClampMultiplier(maxScale, scale);
+        float multiplier = GetClampMultiplier(scale);
         scale.x *= multiplier;
         scale.y *= multiplier;
         scale.z *= multiplier;

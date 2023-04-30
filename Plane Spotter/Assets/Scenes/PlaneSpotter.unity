@@ -2644,17 +2644,17 @@ PrefabInstance:
     - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.005
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.005
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.005
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
@@ -2664,7 +2664,7 @@ PrefabInstance:
     - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1318.52
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4855486140936290290, guid: 95decd6133b163b4dad9441b1ca866b0,
         type: 3}
@@ -5222,7 +5222,7 @@ MonoBehaviour:
   bindDistance: 200
   cameraObject: {fileID: 1354141925}
   converter: {fileID: 1418156271}
-  maxScale: 30
+  maxScale: 40
 --- !u!65 &1418156265
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6460,7 +6460,7 @@ MonoBehaviour:
   bindDistance: 200
   cameraObject: {fileID: 1354141925}
   converter: {fileID: 2046959649}
-  maxScale: 1
+  maxScale: 0.1
 --- !u!114 &2046959649
 MonoBehaviour:
   m_ObjectHideFlags: 0
