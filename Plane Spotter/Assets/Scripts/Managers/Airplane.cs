@@ -91,13 +91,13 @@ public class Airplane : MonoBehaviour
         lineFront.startColor = Color.blue;
         lineFront.endColor = Color.blue;
         lineFront.SetPosition(0, Vector3.zero);
-        lineFront.SetPosition(1, Vector3.forward * 1000f);
+        lineFront.SetPosition(1, Vector3.forward * 2000f);
         
         // Back
         lineBack.startColor = Color.green;
         lineBack.endColor = Color.green;
         lineBack.SetPosition(0, Vector3.zero);
-        lineBack.SetPosition(1, Vector3.back * 1000f);
+        lineBack.SetPosition(1, Vector3.back * 2000f);
 
         // Start disabled
         lineFront.enabled = false;
