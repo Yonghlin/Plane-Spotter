@@ -15,15 +15,9 @@ public class Airport : MonoBehaviour
 
     private bool showTrajectoryLine = false;
 
-    [Range(1,5)]
-    public float waitTimeBeforeInstantiation;
-
     public float rotationalSpeed;
 
     public GPS gps;
-    public GeoConverter converter;
-    public float distance_multiplier;
-    public float elevation_multiplier;
 
     public string getCode()
     {

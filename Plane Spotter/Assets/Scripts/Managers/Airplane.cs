@@ -20,12 +20,9 @@ public class Airplane : MonoBehaviour
     public LineRenderer lineFront;
     public LineRenderer lineBack;
     public GPS gps;
-    public GeoConverter converter;
-    public float distance_multiplier;
-    public float elevation_multiplier;
     public TogglePlaneLines togglePlaneLines;
 
-    long lastUpdateTime;
+    private long lastUpdateTime;
 
     public void UpdateLastUpdateTime()
     {
@@ -40,7 +37,7 @@ public class Airplane : MonoBehaviour
         // Convert the plane's knot speed to fps (feet per second)
         // Convert fps to fpms (feet per millisecond)
         float fps = (float)GroundSpeed * 1.68781f;
-        float fpms = fps / 1000;
+        float fpms = fps / 1000f;
 
         // Get number of feet traveled since last API update
         float traveled = fpms * elapsed;
@@ -60,9 +57,7 @@ public class Airplane : MonoBehaviour
         );
 
         // Add the feet traveled since the last API update
-        // Todo figure out why they move so fast and remove this constant multiplier
         posNew += transform.forward * GetFeetTraveled();
-
         posNew = posManager.NormalizePosition(posNew);
         posManager.SetBoundPosAndScale(this.gameObject, posNew);
     }
