@@ -5222,6 +5222,7 @@ MonoBehaviour:
   bindDistance: 200
   cameraObject: {fileID: 1354141925}
   converter: {fileID: 1418156271}
+  maxScale: 30
 --- !u!65 &1418156265
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6459,6 +6460,7 @@ MonoBehaviour:
   bindDistance: 200
   cameraObject: {fileID: 1354141925}
   converter: {fileID: 2046959649}
+  maxScale: 1
 --- !u!114 &2046959649
 MonoBehaviour:
   m_ObjectHideFlags: 0

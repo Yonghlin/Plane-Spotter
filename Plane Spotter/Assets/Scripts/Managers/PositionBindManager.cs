@@ -8,6 +8,7 @@ public class PositionBindManager : MonoBehaviour
     public int bindDistance;
     public GameObject cameraObject;
     public GeoConverter converter;
+    public int maxScale;
 
     // attached to the game object using this script. Store its initial scale here
     private Vector3 objectScale;
@@ -56,7 +57,7 @@ public class PositionBindManager : MonoBehaviour
         return objDistance;
     }
 
-    private Vector3 GetSphereBoundScale(Vector3 targetPos)
+    private Vector3 GetSphereBoundScale(GameObject obj, Vector3 targetPos)
     {
         // camera's position
         Vector3 playerPos = cameraObject.transform.position;
@@ -77,6 +78,29 @@ public class PositionBindManager : MonoBehaviour
         scale.y = (objectScale.y * bindDistancePercentLength);
         scale.z = (objectScale.z * bindDistancePercentLength);
 
+        return ClampScale(obj, scale);
+    }
+
+    private float GetClampMultiplier(int clampMax, Vector3 scale)
+    {
+        // Get percentages. If scale is larger than clampMax,
+        // percent will be less than 1.
+        float percentX = clampMax / scale.x;
+        float percentY = clampMax / scale.y;
+        float percentZ = clampMax / scale.z;
+        
+        // Only if percent is less than 1, clamp.
+        float smallest = Mathf.Min(percentX, percentY, percentZ);
+        if (smallest < 1.0f) return smallest;
+        else return 1.0f;
+    }
+
+    private Vector3 ClampScale(GameObject obj, Vector3 scale)
+    {
+        float multiplier = GetClampMultiplier(maxScale, scale);
+        scale.x *= multiplier;
+        scale.y *= multiplier;
+        scale.z *= multiplier;
         return scale;
     }
 
@@ -94,7 +118,7 @@ public class PositionBindManager : MonoBehaviour
             objectScaleInitialized = true;
             objectScale = obj.transform.localScale;
         }
-        obj.transform.localScale = GetSphereBoundScale(targetPos);
+        obj.transform.localScale = GetSphereBoundScale(obj, targetPos);
     }
 
 }
