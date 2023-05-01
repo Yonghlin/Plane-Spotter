@@ -11,7 +11,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TMPro;
 
-using gps = GPS;
 //public class AirportData
 //{
 //    public string Code { get; set; }
@@ -59,31 +58,27 @@ public class AirportSet
 public class AirportManager : MonoBehaviour
 {
     private AirportSet airports = new AirportSet();
-
     private List<GameObject> airportPointers = new List<GameObject>();
+    private string httpResult;
+
+    private double lat;
+    private double lon;
 
     public GameObject arrow;
-
-    public gps Gps;
-
-    public CacheManager cacheManager; 
-
     public GameObject AirportBaseObject;
-
+    public GPS gps;
     public string ApiKey;
-
     public double Radius;
 
+    public CacheManager cacheManager; 
     public TMP_Text dataMethod; 
 
-    public double lat;
-    public double lon;
-    public double altitude;
-
-    private string httpResult;
     // Start is called before the first frame update
     void Start()
     {
+        lat = gps.getLatitude();
+        lon = gps.getLongitude();
+
         if(cacheManager.hasCachedData() && cacheManager.checkAirportValidityStatus((float)lat, (float)lon))
         {
             dataMethod.text = "Using Cached Data";

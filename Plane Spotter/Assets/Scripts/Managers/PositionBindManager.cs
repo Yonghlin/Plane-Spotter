@@ -7,10 +7,27 @@ public class PositionBindManager : MonoBehaviour
 
     public int bindDistance;
     public GameObject cameraObject;
+    public GeoConverter converter;
 
     // attached to the game object using this script. Store its initial scale here
     private Vector3 objectScale;
     private bool objectScaleInitialized = false;
+
+    public Vector3 GetRawPosition(float longitude1, float altitude1, float latitude1,
+                                   float longitude2, float altitude2, float latitude2)
+    {
+        Vector3 loc1 = converter.GeoToCartesian(longitude1, altitude1, latitude1);
+        Vector3 loc2 = converter.GeoToCartesian(longitude2, altitude2, latitude2);
+        Vector3 posNew = loc2 - loc1;
+
+        // Since values are given in feet, they are massive, and the objects
+        // will be too tiny to see after their distance and scale is bound.
+        // Scale them down here.
+        posNew.x *= 0.001f;
+        posNew.y *= 0.001f;
+        posNew.z *= 0.001f;
+        return posNew;
+    }
 
     private Vector3 GetSphereBoundPosition(Vector3 targetPos)
     {

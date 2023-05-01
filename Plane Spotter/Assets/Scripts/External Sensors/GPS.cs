@@ -5,9 +5,9 @@ using UnityEngine.Android;
 
 public class GPS : MonoBehaviour
 {
-    private double longitude;
-    private double latitude;
-    private double altitude;
+    private double latitude = 40.0506496;
+    private double longitude = -77.5275351;
+    private double altitude = 0;
     private int framesRun = 0;
     private int timesRun = 0;
 
@@ -39,12 +39,12 @@ public class GPS : MonoBehaviour
         // If the connection failed this cancels location service use.
         if (Input.location.status == LocationServiceStatus.Failed)
         {
-            print("Unable to determine device location");
+            print("Unable to determine device location. Reverting to defaults.");
             yield break;
         }
         else if (Input.location.status != LocationServiceStatus.Running)
         {
-            Debug.Log("Location service not running");
+            Debug.Log("Location service not running. Reverting to defaults.");
             yield break;
         }
         else

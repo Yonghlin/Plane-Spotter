@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/ExampleAssets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/PlaneSpotter.unity
-    guid: 6bdce89659816455b9f906fc62d19910
+    guid: 3f115416700683841bf7ff2e0b7a27bc
   - enabled: 1
     path: Assets/Scenes/Settings.unity
     guid: 84d863ae0f8b84a35a0d64898144c076

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Networking;
@@ -62,50 +63,63 @@ public class FlightManager : MonoBehaviour
 
     public GameObject planeBaseObject;
 
-    public GPS GPS;
+    public GPS gps;
 
-    public int flightSearchOffset;
+    public float flightSearchRadius;
+    public int secondsPerUpdate;
+    private long lastUpdatedMillis;
 
     public string ApiKey;
 
     private string httpResult;
 
+    public List<Airplane> airplanes = new List<Airplane>();
+
     // Start is called before the first frame update
     void Start()
     {
-        //StartCoroutine(GetFlightsFromFA());
+        lastUpdatedMillis = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+        StartCoroutine(GetFlightsFromFA());
     }
 
     // Update is called once per frame
     void Update()
     {
+        // if it's been enough seconds for the next update, update
+        long currentTimeMillis = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+        long millisElapsed = currentTimeMillis - lastUpdatedMillis;
+        long millisPerUpdate = secondsPerUpdate * 1000;
 
+        if (millisElapsed > millisPerUpdate)
+        {
+            lastUpdatedMillis = currentTimeMillis;
+
+            // respawn the planes with updated positions
+            StartCoroutine(GetFlightsFromFA());
+        }
     }
 
-    
+
 
     public double query;
-    public double lat;
-    public double lon;
-    public double otherlat;
-    public double otherlon;
 
     IEnumerator GetFlightsFromFA()
     {
-        lat = /*GPS.getLatitude();//*/40.0506496;
-        lon = /*GPS.getLongitude(); //*/-77.5275351;
-        //otherlat = lat + flightSearchOffset;
-        //otherlon = lon + flightSearchOffset; 
+        double minLat = gps.getLatitude() - flightSearchRadius;
+        double minLon = gps.getLongitude() - flightSearchRadius;
+        double maxLat = gps.getLatitude() + flightSearchRadius;
+        double maxLon = gps.getLongitude() + flightSearchRadius;
         using (UnityWebRequest request = UnityWebRequest.Get("https://aeroapi.flightaware.com/aeroapi/flights/search?" +
                     "query=-latlong+%22" +
-                    lat.ToString() + "+" +
-                    lon.ToString() + "+" +
-                    otherlat.ToString() + "+" +
-                    otherlon.ToString() + "%22"))
+                    minLat.ToString() + "+" +
+                    minLon.ToString() + "+" +
+                    maxLat.ToString() + "+" +
+                    maxLon.ToString() + "%22"))
         {
             request.SetRequestHeader("Content-Type", "application/json");
             request.SetRequestHeader("x-apikey", ApiKey);
             yield return request.SendWebRequest();
+
             if (request.isHttpError || request.isNetworkError)
             {
                 Debug.Log(request.error);
@@ -120,8 +134,45 @@ public class FlightManager : MonoBehaviour
                 RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(text);
                 Debug.Log("num planes: " + rootObject.flights.Count);
                 flights = rootObject.flights;
+
+                List<Airplane> planesToRemove = new List<Airplane>();
+                foreach (Airplane a in airplanes)
+                {
+                    bool wasInNew = false;
+                    List<Flight> toRemove = new List<Flight>();
+
+                    foreach (Flight newFlight in flights)
+                    {
+                        if (a.Code == newFlight.origin.code)
+                        {
+                            a.UpdatePosition(newFlight.last_position.altitude, (float)newFlight.last_position.latitude, (float)newFlight.last_position.longitude);
+                            wasInNew = true;
+                            toRemove.Add(newFlight);
+                        }
+                    }
+
+                    foreach (Flight f in toRemove)
+                    {
+                        // "flights" is the list of NEW planes. if the plane already exists in our old planes, there's no need
+                        // to keep it in the "flights" list, as there is no need to spawn it again, and everything in "flights"
+                        // will be spawned after this.
+                        flights.Remove(f);
+                    }
+
+                    if (!wasInNew)
+                    {
+                        // remove from the scene and the list since it's not in the updated data
+                        planesToRemove.Add(a);
+                        Destroy(a.transform.gameObject);
+                    }
+                }
+
+                foreach (Airplane a in planesToRemove)
+                {
+                    airplanes.Remove(a);
+                }
                 SpawnPlanes(flights);
-                
+
                 yield return flights;
             }
         }
@@ -140,9 +191,13 @@ public class FlightManager : MonoBehaviour
             ap.Name = plane.origin.name;
             ap.Code = plane.origin.code;
             ap.PlaneId = plane.ident;
+            ap.DestinationName = plane.destination.name;
+            ap.DestinationCity = plane.destination.city; 
 
           
             planeobject.SetActive(true);
+            // for each plane that needs to be spawned, add it to our current list of airplanes
+            airplanes.Add(planeobject.GetComponent<Airplane>());
         }
     }
 }

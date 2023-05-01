@@ -13,6 +13,8 @@ public class Airplane : MonoBehaviour
     public double Elevation;
     public double Longitude;
     public double Latitude;
+    public String DestinationName;
+    public String DestinationCity;
 
     // GPS
     [Range(1, 5)]
@@ -37,54 +39,57 @@ public class Airplane : MonoBehaviour
     private float timeStart;
 
     public GPS gps;
+    public GeoConverter converter;
     public float distance_multiplier;
     public float elevation_multiplier;
 
+    private CompassManager compassManager;
+
     private void SetPosition()
     {
-        // convert latitude/longitude to x/y coordinates
-        Vector3 unityCoords = new Vector3(
-                   distance_multiplier * (float)(Latitude - gps.getLatitude()),
-                   elevation_multiplier * (float)Elevation,
-                   distance_multiplier * (float)(Longitude - gps.getLongitude()));
-        // get the position binding script
         PositionBindManager posManager = this.GetComponent<PositionBindManager>();
-        // set the bound position
-        //posManager.SetBoundPosAndScale(this.gameObject, unityCoords);
-        // TODO set this back
-        transform.position = unityCoords;
+        Vector3 posNew = posManager.GetRawPosition(
+            (float) Longitude,
+            (float) Elevation,
+            (float) Latitude,
+            (float) gps.getLongitude(),
+            (float) gps.getAltitude(),
+            (float) gps.getLatitude()
+        );
+        posManager.SetBoundPosAndScale(this.gameObject, posNew);
     }
 
     // Start is called before the first frame update
     void Start()
     {
         timeStart = (float)((DateTime.Now.Ticks) / TimeSpan.TicksPerMillisecond);
-        SetPosition();
-        //StartCoroutine(LateStart());
+        compassManager = GameObject.FindGameObjectWithTag("CompassCamera")
+                                   .GetComponent<CompassManager>();
     }
 
-    // https://answers.unity.com/questions/971957/how-to-initialize-after-start.html
-    IEnumerator LateStart()
+    public void UpdatePosition(float ElevationNew, float LatitudeNew, float LongitudeNew)
     {
-        yield return new WaitForSeconds(waitTimeBeforeInstantiation);
-        // any code here to be run AFTER other GameObject's start functions have run
-        // without waiting a number of seconds, the objects won't display
+        pos2_elevation = ElevationNew;
+        pos2_latitude = LatitudeNew;
+        pos2_longitude = LongitudeNew;
+
+        Elevation = ElevationNew;
+        Latitude = LatitudeNew;
+        Longitude = LongitudeNew;
+
+        Vector3 pos1 = converter.GeoToCartesian((float) pos1_longitude, (float) pos1_elevation, (float) pos1_latitude);
+        Vector3 pos2 = converter.GeoToCartesian((float) pos2_longitude, (float) pos2_elevation, (float) pos2_latitude);
+        Vector3 dir = (pos2 - pos1);
+
+        transform.LookAt(dir);
+        transform.Rotate(0, 180, 0, Space.Self);
+
         SetPosition();
-        // object position in the real world is affected by the direction of
-        // the camera, specifically when the app opens. so offset it here
-        float camYaw = Input.gyro.attitude.eulerAngles.x;
-        transform.RotateAround(gps.transform.position, Vector3.up, -camYaw);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if ((((float)(DateTime.Now.Ticks) / TimeSpan.TicksPerMillisecond)) - timeStart >= timeToWaitVelocity) {
-            pos2_longitude = Longitude;
-            pos2_latitude = Latitude;
-            pos2_elevation = Elevation;
-        }
-
         if (!grabbedPos1)
         {
             pos1_latitude = Latitude;
@@ -97,11 +102,7 @@ public class Airplane : MonoBehaviour
         longitudeVelocity = (pos2_longitude - pos1_longitude) / timeWaited;
         latitudeVelocity = (pos2_latitude - pos1_latitude) / timeWaited;
      
-
-        //Debug.Log("distance from player to airport (x): " + transform.position.x);
-        //Debug.Log("distance from player to airport (y): " + transform.position.y);
-        //Debug.Log("distance from player to airport (z): " + transform.position.z);
-
+        SetPosition(); // todo possibly unnecessary
     }
 
 }

@@ -54,17 +54,6 @@ public class AirportFlights : MonoBehaviour
     [Range(0, 2)]
     public int daysFromNowToGrabAirportFlights;
 
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     int GetNumAirportFlights()
     {
         return airportFlightData.arrivals.Count;
@@ -94,7 +83,7 @@ public class AirportFlights : MonoBehaviour
             request.SetRequestHeader("Content-Type", "application/json");
             request.SetRequestHeader("x-apikey", ApiKey);
             yield return request.SendWebRequest();
-            /*request.SendWebRequest();*/
+
             if (request.isHttpError || request.isNetworkError)
             {
                 Debug.Log(request.error);
@@ -105,7 +94,6 @@ public class AirportFlights : MonoBehaviour
                 var text = request.downloadHandler.text;
                 Debug.Log(text);
 
-                // todo add tmptexts for this?
                 airportFlightData = Newtonsoft.Json.JsonConvert.DeserializeObject<AirportFlightData>(text);
                 foreach(AirportFlightArrival arrival in airportFlightData.arrivals)
                 {
