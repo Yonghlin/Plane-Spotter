@@ -30,9 +30,6 @@ public class TouchManager : MonoBehaviour
                 if (objsHit[0].collider.tag == "Airport")
                 {
                     popup.enableAirportPopup(objsHit[0].collider.gameObject);
-                }else if (objsHit[0].collider.tag == "Airplane")
-                {
-                    popup.enableAirplanePopup(objsHit[0].collider.gameObject);
                 }
             }
         }

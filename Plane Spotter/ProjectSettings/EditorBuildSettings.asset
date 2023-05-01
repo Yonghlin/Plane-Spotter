@@ -18,8 +18,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Settings.unity
     guid: 84d863ae0f8b84a35a0d64898144c076
   - enabled: 1
-    path: Assets/Scenes/InfoScene.unity
+    path: Assets/Scenes/PlaneInfoScene.unity
     guid: 4222942093c5b4b8b9a8d22cf6df3ff6
+  - enabled: 1
+    path: Assets/Scenes/AirportInfoScene.unity
+    guid: ed2d01c505a8a5844acc9f1cd42b82f2
   m_configObjects:
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 744b813df90924c169af73489b8325de,
       type: 2}

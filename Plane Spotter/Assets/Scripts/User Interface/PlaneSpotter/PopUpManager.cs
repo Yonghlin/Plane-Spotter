@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Newtonsoft.Json;
 
 public class PopUpManager : MonoBehaviour
 {
+    //Constants for loading full view information scenes
+  
+
     //Labels for Airport Popup
     public GameObject airportPopup;
     public TMP_Text airportName;
@@ -41,6 +45,7 @@ public class PopUpManager : MonoBehaviour
         airportLongitude.text = airport.GetComponent<Airport>().getLongitude();
         airportLatitude.text = airport.GetComponent<Airport>().getLatitude();
         showTrajectoryLines.isOn = airport.GetComponent<Airport>().isShowingTrajectoryLine();
+        saveCurrentAirport(airport.GetComponent<Airport>());
 
         airportPopup.SetActive(true);
     }
@@ -59,6 +64,7 @@ public class PopUpManager : MonoBehaviour
         airlaneLatitude.text = airplane.GetComponent<Airplane>().Latitude.ToString();
         destinationCity.text  = airplane.GetComponent<Airplane>().DestinationCity;
         destinationName.text = airplane.GetComponent<Airplane>().DestinationName;
+        saveCurrentAirplane(airplane.GetComponent<Airplane>());
 
         airplanePopup.SetActive(true);
     }
@@ -68,4 +74,15 @@ public class PopUpManager : MonoBehaviour
         airplanePopup.SetActive(false);
     }
 
+    private void saveCurrentAirport(Airport data)
+    {
+        string json = JsonUtility.ToJson(data);
+        PlayerPrefs.SetString("Airport", json);
+    }
+
+    private void saveCurrentAirplane(Airplane data)
+    {
+        string json = JsonUtility.ToJson(data);
+        PlayerPrefs.SetString("Airplane", json);
+    }
 }
