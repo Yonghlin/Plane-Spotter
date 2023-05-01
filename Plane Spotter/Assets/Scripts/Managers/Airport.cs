@@ -12,6 +12,9 @@ public class Airport : MonoBehaviour
     public double Elevation;
     public double Longitude;
     public double Latitude;
+    public string timezone;
+    public string location;
+    public string wiki_url;
 
     private bool showTrajectoryLine = false;
 
@@ -50,6 +53,11 @@ public class Airport : MonoBehaviour
         return Name;
     }
 
+    public string getWikiLink()
+    {
+        return wiki_url;
+    }
+
     public string getLongitude()
     {
         return Longitude.ToString();
@@ -58,6 +66,16 @@ public class Airport : MonoBehaviour
     public string getLatitude()
     {
         return Latitude.ToString();
+    }
+
+    public string getTimeZone()
+    {
+        return timezone;
+    }
+
+    public string getLocation()
+    {
+        return location;
     }
 
     private void SetPosition()

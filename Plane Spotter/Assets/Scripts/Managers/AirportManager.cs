@@ -159,6 +159,9 @@ public class AirportManager : MonoBehaviour
             ap.Code = airport.airport_code;
             ap.Longitude = airport.longitude;
             ap.Name = airport.name;
+            ap.location = airport.city;
+            ap.timezone = airport.timezone;
+            ap.wiki_url = airport.wiki_url;
 
             na.SetActive(true);
         }

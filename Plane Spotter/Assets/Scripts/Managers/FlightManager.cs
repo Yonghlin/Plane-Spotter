@@ -192,14 +192,15 @@ public class FlightManager : MonoBehaviour
             ap.Code = plane.origin.code;
             ap.PlaneId = plane.ident;
             ap.DestinationName = plane.destination.name;
-            ap.DestinationCity = plane.destination.city; 
+            ap.DestinationCity = plane.destination.city;
 
-          
+
             planeobject.SetActive(true);
             // for each plane that needs to be spawned, add it to our current list of airplanes
             airplanes.Add(planeobject.GetComponent<Airplane>());
         }
     }
+
 }
 
 
