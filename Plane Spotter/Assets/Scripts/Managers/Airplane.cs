@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using gps = GPS;
 
@@ -16,34 +17,34 @@ public class Airplane : MonoBehaviour
     public String DestinationName;
     public String DestinationCity;
 
-    // GPS
-    [Range(1, 5)]
-    public float waitTimeBeforeInstantiation;
-
-    private double pos1_longitude;
-    private double pos1_latitude;
-    private double pos1_elevation;
-
-    private double pos2_longitude;
-    private double pos2_latitude;
-    private double pos2_elevation;
-
-    private bool grabbedPos1;
-
-    private double longitudeVelocity;
-    private double latitudeVelocity;
-    private double velocityElevation;
-
-    public float timeToWaitVelocity;
-    private float timeWaited = 0;
-    private float timeStart;
-
+    public double Heading;
+    public double GroundSpeed;
+    public LineRenderer lineFront;
+    public LineRenderer lineBack;
     public GPS gps;
-    public GeoConverter converter;
-    public float distance_multiplier;
-    public float elevation_multiplier;
+    public TogglePlaneLines togglePlaneLines;
 
-    private CompassManager compassManager;
+    private long lastUpdateTime;
+
+    public void UpdateLastUpdateTime()
+    {
+        lastUpdateTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+    }
+
+    private float GetFeetTraveled()
+    {
+        long currentTime = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+        long elapsed = currentTime - lastUpdateTime;
+
+        // Convert the plane's knot speed to fps (feet per second)
+        // Convert fps to fpms (feet per millisecond)
+        float fps = (float)GroundSpeed * 1.68781f;
+        float fpms = fps / 1000f;
+
+        // Get number of feet traveled since last API update
+        float traveled = fpms * elapsed;
+        return traveled;
+    }
 
     private void SetPosition()
     {
@@ -56,53 +57,65 @@ public class Airplane : MonoBehaviour
             (float) gps.getAltitude(),
             (float) gps.getLatitude()
         );
-        posManager.SetBoundPosAndScale(this.gameObject, posNew);
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        timeStart = (float)((DateTime.Now.Ticks) / TimeSpan.TicksPerMillisecond);
-        compassManager = GameObject.FindGameObjectWithTag("CompassCamera")
-                                   .GetComponent<CompassManager>();
+        // Add the feet traveled since the last API update
+        posNew += transform.forward * GetFeetTraveled();
+        posNew = posManager.NormalizePosition(posNew);
+        posManager.SetBoundPosAndScale(this.gameObject, posNew);
     }
 
     public void UpdatePosition(float ElevationNew, float LatitudeNew, float LongitudeNew)
     {
-        pos2_elevation = ElevationNew;
-        pos2_latitude = LatitudeNew;
-        pos2_longitude = LongitudeNew;
-
+        Longitude = LongitudeNew;
         Elevation = ElevationNew;
         Latitude = LatitudeNew;
-        Longitude = LongitudeNew;
+    }
 
-        Vector3 pos1 = converter.GeoToCartesian((float) pos1_longitude, (float) pos1_elevation, (float) pos1_latitude);
-        Vector3 pos2 = converter.GeoToCartesian((float) pos2_longitude, (float) pos2_elevation, (float) pos2_latitude);
-        Vector3 dir = (pos2 - pos1);
+    private void UpdateLineToggle()
+    {
+        lineFront.enabled = togglePlaneLines.DisplayingLines();
+        lineBack.enabled = togglePlaneLines.DisplayingLines();
+    }
 
-        transform.LookAt(dir);
-        transform.Rotate(0, 180, 0, Space.Self);
+    private void InitLines()
+    {
+        // Initialize lines
+        LineRenderer[] lines = { lineFront, lineBack };
+        foreach (var line in lines)
+        {
+            line.positionCount = 2;
+            line.useWorldSpace = false;
+            line.startWidth = 0.3f;
+            line.endWidth = 0.3f;
+        }
 
-        SetPosition();
+        // Front
+        lineFront.startColor = Color.blue;
+        lineFront.endColor = Color.blue;
+        lineFront.SetPosition(0, Vector3.zero);
+        lineFront.SetPosition(1, Vector3.forward * 2000f);
+        
+        // Back
+        lineBack.startColor = Color.green;
+        lineBack.endColor = Color.green;
+        lineBack.SetPosition(0, Vector3.zero);
+        lineBack.SetPosition(1, Vector3.back * 2000f);
+
+        // Start disabled
+        lineFront.enabled = false;
+        lineFront.enabled = false;
+    }
+
+    void Start()
+    {
+        InitLines();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!grabbedPos1)
-        {
-            pos1_latitude = Latitude;
-            pos1_longitude = Longitude;
-            pos1_elevation = Elevation;
-            grabbedPos1 = true;
-        }
-
-        // Calculate velocity
-        longitudeVelocity = (pos2_longitude - pos1_longitude) / timeWaited;
-        latitudeVelocity = (pos2_latitude - pos1_latitude) / timeWaited;
-     
-        SetPosition(); // todo possibly unnecessary
+        SetPosition();
+        UpdateLineToggle();
     }
 
 }

@@ -108,7 +108,7 @@ public class CompassManager : MonoBehaviour
         // the last compass reading is not the default value.
         if (!originAnchored && lastRaw != 0)
         {
-            transform.parent.rotation = Quaternion.Euler(new Vector3(0f, lastRaw, 0f));
+            transform.parent.rotation = Quaternion.Euler(new Vector3(0f, 180 + lastRaw, 0f));
             originAnchored = true;
             originRotatedAmount = lastRaw;
         }

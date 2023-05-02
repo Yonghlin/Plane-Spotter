@@ -57,23 +57,15 @@ public class RootObject
 
 public class FlightManager : MonoBehaviour
 {
-    private List<Flight> flights;
-
-    private List<GameObject> planePointers = new List<GameObject>();
-
     public GameObject planeBaseObject;
-
     public GPS gps;
-
     public float flightSearchRadius;
     public int secondsPerUpdate;
-    private long lastUpdatedMillis;
-
     public string ApiKey;
 
-    private string httpResult;
-
-    public List<Airplane> airplanes = new List<Airplane>();
+    private List<Airplane> airplanesInScene = new List<Airplane>();
+    private List<Flight> airplanesFromAPI;
+    private long lastUpdatedMillis;
 
     // Start is called before the first frame update
     void Start()
@@ -99,9 +91,14 @@ public class FlightManager : MonoBehaviour
         }
     }
 
-
-
-    public double query;
+    private void ClearExistingPlanes()
+    {
+        GameObject[] planes = GameObject.FindGameObjectsWithTag("Airplane");
+        foreach (GameObject plane in planes)
+        {
+            Destroy(plane);
+        }
+    }
 
     IEnumerator GetFlightsFromFA()
     {
@@ -133,47 +130,12 @@ public class FlightManager : MonoBehaviour
                 //RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(text);
                 RootObject rootObject = JsonConvert.DeserializeObject<RootObject>(text);
                 Debug.Log("num planes: " + rootObject.flights.Count);
-                flights = rootObject.flights;
+                airplanesFromAPI = rootObject.flights;
 
-                List<Airplane> planesToRemove = new List<Airplane>();
-                foreach (Airplane a in airplanes)
-                {
-                    bool wasInNew = false;
-                    List<Flight> toRemove = new List<Flight>();
+                ClearExistingPlanes();
+                SpawnPlanes(airplanesFromAPI);
 
-                    foreach (Flight newFlight in flights)
-                    {
-                        if (a.Code == newFlight.origin.code)
-                        {
-                            a.UpdatePosition(newFlight.last_position.altitude, (float)newFlight.last_position.latitude, (float)newFlight.last_position.longitude);
-                            wasInNew = true;
-                            toRemove.Add(newFlight);
-                        }
-                    }
-
-                    foreach (Flight f in toRemove)
-                    {
-                        // "flights" is the list of NEW planes. if the plane already exists in our old planes, there's no need
-                        // to keep it in the "flights" list, as there is no need to spawn it again, and everything in "flights"
-                        // will be spawned after this.
-                        flights.Remove(f);
-                    }
-
-                    if (!wasInNew)
-                    {
-                        // remove from the scene and the list since it's not in the updated data
-                        planesToRemove.Add(a);
-                        Destroy(a.transform.gameObject);
-                    }
-                }
-
-                foreach (Airplane a in planesToRemove)
-                {
-                    airplanes.Remove(a);
-                }
-                SpawnPlanes(flights);
-
-                yield return flights;
+                yield return airplanesFromAPI;
             }
         }
     }
@@ -184,6 +146,7 @@ public class FlightManager : MonoBehaviour
         {
             Debug.Log("Spawning plane: " + plane.ident);
             GameObject planeobject = Instantiate(planeBaseObject);
+
             Airplane ap = planeobject.GetComponent<Airplane>();
             ap.Elevation = plane.last_position.altitude;
             ap.Latitude = plane.last_position.latitude;
@@ -193,11 +156,15 @@ public class FlightManager : MonoBehaviour
             ap.PlaneId = plane.ident;
             ap.DestinationName = plane.destination.name;
             ap.DestinationCity = plane.destination.city;
+            ap.Heading = plane.last_position.heading;
+            ap.GroundSpeed = plane.last_position.groundspeed;
 
-
+            ap.UpdateLastUpdateTime();
+            planeobject.transform.rotation = Quaternion.Euler(0, 180 + plane.last_position.heading, 0);
             planeobject.SetActive(true);
+
             // for each plane that needs to be spawned, add it to our current list of airplanes
-            airplanes.Add(planeobject.GetComponent<Airplane>());
+            airplanesInScene.Add(planeobject.GetComponent<Airplane>());
         }
     }
 
