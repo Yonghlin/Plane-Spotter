@@ -57,7 +57,7 @@ public class PopUpManager : MonoBehaviour
 
     public void enableAirplanePopup(GameObject airplane)
     {
-        airplaneName.text = airplane.GetComponent<Airplane>().name;
+        airplaneName.text = airplane.GetComponent<Airplane>().Name;
         airplaneCode.text = airplane.GetComponent<Airplane>().Code;
         airplaneElevation.text = airplane.GetComponent<Airplane>().Elevation.ToString();
         airplaneLongitude.text = airplane.GetComponent<Airplane>().Longitude.ToString();
