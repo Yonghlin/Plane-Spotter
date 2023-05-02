@@ -21,6 +21,7 @@ public class Airport : MonoBehaviour
     public float rotationalSpeed;
 
     public GPS gps;
+    public GeoConverter converter;
 
     public string getCode()
     {

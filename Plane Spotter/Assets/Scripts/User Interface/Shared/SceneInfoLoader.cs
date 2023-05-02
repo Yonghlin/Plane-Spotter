@@ -29,7 +29,7 @@ public class SceneInfoLoader : MonoBehaviour
         //Debug.Log("Test " + ap.GetComponent<Airport>().getName());
 
         AirportName.text = "Name: " + temp.getName();
-        AirportLocation.text = "Location" + temp.getLocation();
+        AirportLocation.text = "Location: " + temp.getLocation();
         AirportCode.text = "Code: " + temp.getCode();
         AirportCoordinates.text = "Coordinates: (" + temp.getLongitude() + "," + temp.getLatitude() + ")";
         AirportTimezone.text = "Timezone: " + temp.getTimeZone();
